@@ -48,8 +48,7 @@ export default function LoginPage() {
       // Special Admin Check (Gmail দিয়ে Admin ঢুকবে)
       const adminEmails = [
         "mdmosabbirrahman07@gmail.com",
-        "admin@ecoworldbajar.com",
-        "admin@bamboocraft.com"
+    
       ];
 
       if (adminEmails.includes(form.email.toLowerCase())) {
