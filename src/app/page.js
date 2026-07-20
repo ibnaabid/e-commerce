@@ -1,11 +1,11 @@
-import Image from "next/image";
-import Home from "./Main/page";
+import MainPage from "./Main/page";
+// import Main from "./Main/page";
 
 export default function Home() {
   return (
-  //  <>
+ 
   <>
-  <Home/>
+  <MainPage/>
 </>
   );
 }

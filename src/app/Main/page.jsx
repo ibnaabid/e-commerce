@@ -1,9 +1,8 @@
-// app/page.js
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Leaf, ShoppingCart, Truck, Award, ArrowRight } from "lucide-react";
-import Navbar from "../components/Navbar";
+import Image from "next/image";
 
 const heroSlides = [
   {
@@ -26,10 +25,9 @@ const heroSlides = [
   },
 ];
 
-export default function Home() {
+export default function MainPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Auto Scroll every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
@@ -39,22 +37,26 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
-      
-      {/* HERO SECTION with Auto Scroll */}
+      {/* HERO SECTION */}
       <div className="relative h-screen overflow-hidden">
         {heroSlides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100" : "opacity-0"}`}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
           >
-            <img
+            {/* Fixed Image with fill */}
+            <Image
               src={slide.image}
               alt="Eco Bajar"
-              className="object-cover w-full h-full"
+              fill
+              className="object-cover"
+              priority={index === 0} // First image load faster
             />
-            <div className={`absolute inset-0 bg-gradient-to-br ${slide.color} opacity-70`}></div>
             
+            <div className={`absolute inset-0 bg-gradient-to-br ${slide.color} opacity-70`}></div>
+
             <div className="absolute inset-0 flex items-center">
               <div className="max-w-4xl mx-auto px-6 text-center text-white">
                 <div className="flex justify-center mb-6">
@@ -63,7 +65,7 @@ export default function Home() {
                     <span className="text-sm tracking-widest uppercase">100% Natural • Eco Friendly</span>
                   </div>
                 </div>
-                
+
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-4 tracking-tight">
                   {slide.title}
                 </h1>
@@ -97,7 +99,9 @@ export default function Home() {
             <button
               key={idx}
               onClick={() => setCurrentSlide(idx)}
-              className={`w-3 h-3 rounded-full transition-all ${idx === currentSlide ? "bg-white scale-125" : "bg-white/40"}`}
+              className={`w-3 h-3 rounded-full transition-all ${
+                idx === currentSlide ? "bg-white scale-125" : "bg-white/40"
+              }`}
             />
           ))}
         </div>
@@ -118,7 +122,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* FEATURED CATEGORIES */}
+      {/* FEATURED CATEGORIES - Fixed */}
       <section className="py-20 bg-neutral-950">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl font-bold text-white text-center mb-4">Our Bamboo & Eco Collection</h2>
@@ -129,10 +133,11 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {["Bamboo Products", "Organic Vegetables", "Fresh Fruits", "Natural Groceries"].map((cat, i) => (
               <div key={i} className="group relative h-80 rounded-3xl overflow-hidden cursor-pointer">
-                <img
+                <Image
                   src={`https://picsum.photos/id/${30 + i}/600/600`}
                   alt={cat}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                 <div className="absolute bottom-8 left-8 text-white">
