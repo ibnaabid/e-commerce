@@ -1,59 +1,50 @@
+// components/Footer.js
+import Link from "next/link";
+import { Leaf } from "lucide-react";
 
+export default function Footer() {
+  return (
+    <footer className="bg-neutral-950 border-t border-maroon-900 text-neutral-400">
+      <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
+        <div className="grid md:grid-cols-4 gap-10">
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <Leaf className="text-emerald-500" size={32} />
+              <span className="text-2xl font-bold text-white">EcoWorld</span>
+            </div>
+            <p className="text-sm">ঘরে বসে সবুজ বাজার করুন</p>
+          </div>
 
-const Footer = () => {
-    return (
-        <div><footer className="bg-black text-white py-10">
+          <div>
+            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/shop" className="hover:text-white">Shop</Link></li>
+              <li><Link href="/about" className="hover:text-white">About Us</Link></li>
+              <li><Link href="/blog" className="hover:text-white">Blog</Link></li>
+              <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
+            </ul>
+          </div>
 
-  <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
+          <div>
+            <h4 className="text-white font-semibold mb-4">Contact</h4>
+            <p className="text-sm">+880 1XXX-XXXXXX</p>
+            <p className="text-sm">support@ecoworldbajar.com</p>
+          </div>
 
-    <div>
-      <h2 className="text-2xl font-bold text-violet-500">
-        AbidStore
-      </h2>
-
-      <p className="text-gray-400 mt-4">
-        Modern e-commerce experience for everyone.
-      </p>
-    </div>
-
-    <div>
-      <h3 className="font-bold mb-4">Quick Links</h3>
-
-      <ul className="space-y-2 text-gray-400">
-        <li>Home</li>
-        <li>Products</li>
-        <li>Contact</li>
-      </ul>
-    </div>
-
-    <div>
-      <h3 className="font-bold mb-4">Support</h3>
-
-      <ul className="space-y-2 text-gray-400">
-        <li>Privacy Policy</li>
-        <li>Terms</li>
-        <li>Help Center</li>
-      </ul>
-    </div>
-
-    <div>
-      <h3 className="font-bold mb-4">Contact</h3>
-
-      <p className="text-gray-400">
-        abidstore@gmail.com
-      </p>
-    </div>
-
-  </div>
-
-  <div className="border-t border-white/10 mt-10 pt-6 text-center text-gray-500">
-    © 2026 AbidStore. All rights reserved.
-  </div>
-
-</footer>
-            
+          <div>
+            <h4 className="text-white font-semibold mb-4">Newsletter</h4>
+            <input 
+              type="email" 
+              placeholder="Your email" 
+              className="bg-neutral-900 border border-maroon-800 rounded-2xl px-5 py-3 w-full text-sm"
+            />
+          </div>
         </div>
-    );
-};
 
-export default Footer;
+        <div className="text-center mt-16 pt-8 border-t border-neutral-800 text-xs">
+          © 2026 EcoWorld Ghore Bajar • All Rights Reserved
+        </div>
+      </div>
+    </footer>
+  );
+}

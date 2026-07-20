@@ -38,7 +38,7 @@ export default function Navbar() {
     { label: "Home", href: "/", icon: Home },
     { label: "Shop", href: "/shop", icon: ShoppingBasket },
     { label: "Categories", href: "/categories", icon: Leaf },
-    { label: "About", href: "/about", icon: Info },
+    { label: "About", href: "/About", icon: Info },
     { label: "Contact", href: "/contact", icon: Phone },
   ];
 
@@ -55,9 +55,7 @@ export default function Navbar() {
               <span className="text-white font-bold text-xl tracking-tight">
                 EcoWorld
               </span>
-              <span className="text-maroon-400 text-sm font-medium block -mt-1">
-                Ghore Bajar
-              </span>
+             
             </div>
           </Link>
 
