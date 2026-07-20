@@ -1,4 +1,7 @@
+import { Button } from "@heroui/react";
 import Image from "next/image";
+import Link from "next/link";
+import DeleteBtn from "./DeleteBtn";
 
 const DynamicProducts = async ({ params }) => {
   const { id } = await params;
@@ -20,7 +23,8 @@ const DynamicProducts = async ({ params }) => {
         <h2 className="text-center text-3xl font-bold text-violet-400 mb-6">
           Product Details
         </h2>
-   <Image height={200}
+   <Image
+    height={200}
         width={200}
           alt="products"
           className="pointer-events-none absolute inset-0 h-full w-full scale-125 object-cover select-none"
@@ -47,6 +51,13 @@ const DynamicProducts = async ({ params }) => {
           </span>
 
         </div>
+<div className="flex gap-3 justify-between items-center py-5 mt-5">
+  <Link href="/products">
+  <Button variant="primary" className="border border-none rotate-2 rounded-2xl">Go Back</Button>
+</Link>
+
+<DeleteBtn product={product}></DeleteBtn>
+</div>
 
       </div>
     </div>

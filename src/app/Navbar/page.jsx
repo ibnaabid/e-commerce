@@ -1,9 +1,21 @@
+"use client"
 import Link from "next/link";
 
 import { ShoppingCart, User2 } from "lucide-react";
 import Image from "next/image";
+import { authClient } from "../lib/auth-client";
+import { Button } from "@heroui/react";
 
 const Navbar = () => {
+
+const { data: session } = authClient.useSession()
+
+
+const LogHandler=async()=>{
+  await authClient.signOut();
+}
+
+
   return (
     <nav className="border-b border-white/10 bg-slate-950 text-white">
       
@@ -73,23 +85,45 @@ const Navbar = () => {
 
           </button>
 
-          {/* User */}
-          <button className="rounded-full p-2 transition hover:bg-white/10">
-            <User2 size={22} />
-          </button>
+  {
+  session?.user ? (
+    <div className="flex items-center gap-3">
 
-          {/* Login */}
-          <Link
-            href="/login"
-            className="rounded-xl bg-violet-600 px-5 py-2 font-medium transition hover:bg-violet-700"
-          >
-            Login
-          </Link>
-          <Link href="/signup" className="rounded-2xl bg-green-600 px-5 py-2 font-medium transition">
-        Sign Up  </Link>
-          
-        
+      <h2>{session?.user?.name}</h2>
 
+      <Image
+        src={session?.user?.image}
+        height={40}
+        width={40}
+        alt={session?.user?.name}
+        className="rounded-full border"
+      />
+
+      <Button onClick={LogHandler}>
+        Log Out
+      </Button>
+
+    </div>
+  ) : (
+    <div className="flex items-center gap-3">
+
+      <Link
+        href="/login"
+        className="rounded-xl bg-violet-600 px-5 py-2 font-medium transition hover:bg-violet-700"
+      >
+        Login
+      </Link>
+
+      <Link
+        href="/signup"
+        className="rounded-2xl bg-green-600 px-5 py-2 font-medium transition hover:bg-green-700"
+      >
+        Sign Up
+      </Link>
+
+    </div>
+  )
+}
         </div>
 
       </div>
@@ -98,4 +132,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;         
