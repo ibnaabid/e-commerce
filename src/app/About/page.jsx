@@ -2,12 +2,12 @@
 "use client";
 import { motion } from "framer-motion";
 import { Leaf, Users, Award, Heart } from "lucide-react";
-import Navbar from "../../components/Navbar";
+// import Navbar from "../../components/Navbar";
 
 export default function About() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="bg-neutral-950 min-h-screen text-white pt-20">
         {/* Hero */}
         <div className="relative h-[70vh] flex items-center justify-center overflow-hidden">

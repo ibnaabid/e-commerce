@@ -1,18 +1,19 @@
-// components/Navbar.js
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import {
   Menu,
   X,
   LogOut,
   LayoutDashboard,
   Home,
-  ShoppingBasket,
   Info,
   Phone,
   Leaf,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { authClient } from "../lib/auth-client";
 
@@ -20,13 +21,21 @@ export default function Navbar() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
+  
+  // Theme Toggle Hooks
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const user = session?.user;
   const role = user?.role || "customer";
   const userName = user?.name || "";
   const userInitial = userName ? userName.charAt(0).toUpperCase() : "U";
 
-  const dashboardLink = role === "admin" ? "/dashboard/admin" : "/dashboard";
+  const dashboardLink = role === "admin" ? "/dashboard/admin" : "/dashboard/customer";
 
   const handleLogout = async () => {
     await authClient.signOut();
@@ -36,14 +45,13 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Home", href: "/", icon: Home },
-    { label: "Shop", href: "/shop", icon: ShoppingBasket },
     { label: "Categories", href: "/categories", icon: Leaf },
     { label: "About", href: "/About", icon: Info },
     { label: "Contact", href: "/contact", icon: Phone },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-neutral-950/90 border-b border-maroon-800">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-neutral-950/90 border-b border-gray-200 dark:border-maroon-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -52,10 +60,9 @@ export default function Navbar() {
               <Leaf size={20} className="text-white" />
             </div>
             <div>
-              <span className="text-white font-bold text-xl tracking-tight">
+              <span className="text-gray-900 dark:text-white font-bold text-xl tracking-tight">
                 EcoWorld
               </span>
-             
             </div>
           </Link>
 
@@ -65,7 +72,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="px-5 py-2 rounded-xl text-sm text-neutral-300 hover:text-white hover:bg-white/5 transition-all duration-200"
+                className="px-5 py-2 rounded-xl text-sm text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
               >
                 {link.label}
               </Link>
@@ -74,16 +81,31 @@ export default function Navbar() {
 
           {/* Desktop Right Side */}
           <div className="hidden md:flex items-center gap-3">
+            {/* 🌗 Dark / Light Mode Toggle Button */}
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2.5 rounded-2xl bg-gray-100 dark:bg-neutral-900 border border-gray-200 dark:border-maroon-800 text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white transition-all duration-200"
+                aria-label="Toggle Theme"
+              >
+                {theme === "dark" ? (
+                  <Sun size={19} className="text-amber-400" />
+                ) : (
+                  <Moon size={19} className="text-neutral-700" />
+                )}
+              </button>
+            )}
+
             {isPending ? (
-              <div className="w-32 h-9 rounded-xl bg-white/5 animate-pulse" />
+              <div className="w-32 h-9 rounded-xl bg-gray-200 dark:bg-white/5 animate-pulse" />
             ) : user ? (
               <div className="flex items-center gap-3">
                 {/* User Info */}
-                <div className="flex items-center gap-2 pl-3 pr-5 py-1.5 rounded-2xl bg-neutral-900 border border-maroon-800">
+                <div className="flex items-center gap-2 pl-3 pr-5 py-1.5 rounded-2xl bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-maroon-800">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-maroon-600 to-rose-600 flex items-center justify-center text-sm font-bold text-white">
                     {userInitial}
                   </div>
-                  <span className="text-sm text-neutral-200 truncate max-w-[150px]">
+                  <span className="text-sm text-gray-800 dark:text-neutral-200 truncate max-w-[150px]">
                     {userName}
                   </span>
                 </div>
@@ -98,7 +120,7 @@ export default function Navbar() {
 
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm text-neutral-300 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm text-gray-700 dark:text-neutral-300 hover:text-red-500 hover:bg-red-500/10 transition-all"
                 >
                   <LogOut size={17} />
                   Logout
@@ -108,7 +130,7 @@ export default function Navbar() {
               <div className="flex items-center gap-3">
                 <Link
                   href="/login"
-                  className="px-6 py-2.5 rounded-2xl text-sm text-neutral-300 hover:bg-white/5 transition-all"
+                  className="px-6 py-2.5 rounded-2xl text-sm text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-all"
                 >
                   Login
                 </Link>
@@ -122,27 +144,44 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-neutral-300 hover:text-white p-2"
-          >
-            {mobileOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
+          {/* Mobile Right Controls */}
+          <div className="flex items-center gap-2 md:hidden">
+            {/* Mobile Theme Toggle */}
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 rounded-xl bg-gray-100 dark:bg-neutral-900 border border-gray-200 dark:border-maroon-800 text-gray-700 dark:text-neutral-300"
+              >
+                {theme === "dark" ? (
+                  <Sun size={20} className="text-amber-400" />
+                ) : (
+                  <Moon size={20} className="text-neutral-700" />
+                )}
+              </button>
+            )}
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white p-2"
+            >
+              {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-maroon-900 bg-neutral-950/95 backdrop-blur-xl px-4 py-5 space-y-1">
+        <div className="md:hidden border-t border-gray-200 dark:border-maroon-900 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-xl px-4 py-5 space-y-1">
           {user && (
-            <div className="flex items-center gap-3 px-4 py-4 mb-4 bg-neutral-900 border border-maroon-800 rounded-2xl">
+            <div className="flex items-center gap-3 px-4 py-4 mb-4 bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-maroon-800 rounded-2xl">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-maroon-600 to-rose-600 flex items-center justify-center text-xl font-bold text-white">
                 {userInitial}
               </div>
               <div>
-                <p className="font-semibold text-white">{userName}</p>
-                <p className="text-xs text-maroon-400 capitalize">{role}</p>
+                <p className="font-semibold text-gray-900 dark:text-white">{userName}</p>
+                <p className="text-xs text-maroon-600 dark:text-maroon-400 capitalize">{role}</p>
               </div>
             </div>
           )}
@@ -154,7 +193,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 px-5 py-4 rounded-2xl text-base text-neutral-300 hover:bg-maroon-950 hover:text-white transition-all"
+                className="flex items-center gap-3 px-5 py-4 rounded-2xl text-base text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-maroon-950 hover:text-gray-900 dark:hover:text-white transition-all"
               >
                 <Icon size={22} />
                 {link.label}
@@ -177,7 +216,7 @@ export default function Navbar() {
                   setMobileOpen(false);
                   handleLogout();
                 }}
-                className="flex items-center gap-3 px-5 py-4 rounded-2xl text-base text-red-400 hover:bg-red-500/10 w-full text-left"
+                className="flex items-center gap-3 px-5 py-4 rounded-2xl text-base text-red-500 hover:bg-red-500/10 w-full text-left"
               >
                 <LogOut size={22} />
                 Logout
@@ -188,7 +227,7 @@ export default function Navbar() {
               <Link
                 href="/login"
                 onClick={() => setMobileOpen(false)}
-                className="text-center py-4 rounded-2xl border border-neutral-700 text-neutral-300 font-medium"
+                className="text-center py-4 rounded-2xl border border-gray-300 dark:border-neutral-700 text-gray-700 dark:text-neutral-300 font-medium"
               >
                 Login
               </Link>

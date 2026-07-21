@@ -1,191 +1,180 @@
-"use client";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Leaf, ShoppingCart, Truck, Award, ArrowRight } from "lucide-react";
-import Image from "next/image";
+'use client'; // 👈 এই লাইনটি যুক্ত করা হয়েছে
 
-const heroSlides = [
-  {
-    title: "বাঁশের ঝুড়ি থেকে ঘরের বাজার",
-    subtitle: "প্রকৃতির সাথে সংযোগ, স্বাস্থ্যের সাথে সম্পর্ক",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a9c?w=1200",
-    color: "from-emerald-700 to-maroon-700",
-  },
-  {
-    title: "Organic & Chemical Free",
-    subtitle: "সরাসরি কৃষকের খেত থেকে আপনার ঘরে",
-    image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200",
-    color: "from-amber-700 to-rose-700",
-  },
-  {
-    title: "EcoWorld Ghore Bajar",
-    subtitle: "সবুজ জীবনের সাথে আপনার প্রতিদিন",
-    image: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=1200",
-    color: "from-teal-700 to-maroon-800",
-  },
-];
+import React from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { 
+  Leaf, 
+  ArrowRight, 
+  ShieldCheck, 
+  RotateCcw, 
+  Package, 
+  Tag, 
+  Truck 
+} from 'lucide-react';
 
-export default function MainPage() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+const HeroPage = ({ onSelectCategory }) => {
+  // Eco World এর ৪টি প্রিমিয়াম ইমেজ
+  const images = {
+    main: "https://media.gettyimages.com/id/933192110/photo/different-type-of-mud-pot-market-in-dhaka-bangladesh-on-march-17-2018-mud-pot-business-is-a.jpg?s=612x612&w=0&k=20&c=gby1qw4qPqYmagcIqr--QjzrY6ElFnbgpbsTb3xUmCU=", 
+    decor: "https://media.gettyimages.com/id/2245822897/photo/desi-chandelier.jpg?s=612x612&w=0&k=20&c=7qwxdBZ9TaB5tw-5IdeCv1T-nHUlh6Pxe9O3Gb1QEzY=", 
+    kitchen: "https://media.gettyimages.com/id/1243339158/photo/rangamati-bangladesha-handicraft-manufacturer-in-kaptai-area-of-rangamati-is-making-household.jpg?s=612x612&w=0&k=20&c=_Ix3swka6uct0chyVi2KtgMZCg0zLGDMptSMngIoUHg=", 
+    furniture: "https://media.gettyimages.com/id/1354895331/photo/wicker-works-traditional-thai.jpg?s=612x612&w=0&k=20&c=Vei3Zcc0IqcowUxIhIOIr7JaVpKd5xhgz8-x66j9A8I=" 
+  };
 
   return (
-    <>
-      {/* HERO SECTION */}
-      <div className="relative h-screen overflow-hidden">
-        {heroSlides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {/* Fixed Image with fill */}
-            <Image
-              src={slide.image}
-              alt="Eco Bajar"
-              fill
-              className="object-cover"
-              priority={index === 0} // First image load faster
-            />
-            
-            <div className={`absolute inset-0 bg-gradient-to-br ${slide.color} opacity-70`}></div>
+    <div className="relative min-h-screen bg-[#F4F1EA] text-[#1A1A1A] overflow-hidden flex items-center">
+      
+      {/* ব্যাকগ্রাউন্ড সফ্ট আর্ট */}
+      <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-[#2D5A27]/10 rounded-full filter blur-[100px] -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-[450px] h-[450px] bg-[#800020]/10 rounded-full filter blur-[100px] -z-10"></div>
 
-            <div className="absolute inset-0 flex items-center">
-              <div className="max-w-4xl mx-auto px-6 text-center text-white">
-                <div className="flex justify-center mb-6">
-                  <div className="px-6 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center gap-2">
-                    <Leaf className="text-emerald-300" />
-                    <span className="text-sm tracking-widest uppercase">100% Natural • Eco Friendly</span>
-                  </div>
-                </div>
-
-                <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-4 tracking-tight">
-                  {slide.title}
-                </h1>
-                <p className="text-xl md:text-2xl text-neutral-200 mb-10 max-w-2xl mx-auto">
-                  {slide.subtitle}
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    href="/shop"
-                    className="bg-white text-neutral-900 px-10 py-4 rounded-2xl font-semibold text-lg flex items-center justify-center gap-3 hover:bg-amber-300 transition-all group"
-                  >
-                    Shop Now
-                    <ArrowRight className="group-hover:translate-x-1 transition" />
-                  </Link>
-                  <Link
-                    href="/categories"
-                    className="border border-white/60 hover:border-white px-8 py-4 rounded-2xl font-medium text-lg transition-all"
-                  >
-                    Browse Categories
-                  </Link>
-                </div>
-              </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-6 py-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        {/* ১. বাম পাশ: টেক্সট এবং ক্যাটাগরি কার্ডসমূহ (5 Columns) */}
+        <motion.div 
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="lg:col-span-5 text-center lg:text-left z-10"
+        >
+          <div className="inline-flex items-center gap-2 bg-[#2D5A27]/10 text-[#2D5A27] px-4 py-1.5 rounded-full font-medium text-sm mb-6 border border-[#2D5A27]/20">
+            <Leaf className="w-4 h-4" /> Eco World Bamboo Collection
           </div>
-        ))}
-
-        {/* Slide Indicators */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
-          {heroSlides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentSlide(idx)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                idx === currentSlide ? "bg-white scale-125" : "bg-white/40"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* TRUST BAR */}
-      <div className="bg-neutral-900 py-4 border-b border-maroon-800">
-        <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 md:gap-16 text-neutral-400 text-sm">
-          <div className="flex items-center gap-3">
-            <Truck className="text-emerald-500" /> <span>সারা ঢাকায় ৬০ মিনিট ডেলিভারি</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Award className="text-amber-500" /> <span>১০০% অর্গানিক গ্যারান্টি</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Leaf className="text-teal-500" /> <span>Eco-Friendly Packaging</span>
-          </div>
-        </div>
-      </div>
-
-      {/* FEATURED CATEGORIES - Fixed */}
-      <section className="py-20 bg-neutral-950">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-bold text-white text-center mb-4">Our Bamboo & Eco Collection</h2>
-          <p className="text-neutral-400 text-center mb-12 max-w-2xl mx-auto">
-            প্রকৃতির উপহার — বাঁশ, কাঠ, পাতা ও অর্গানিক পণ্য
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1A1A1A] leading-tight mb-4">
+            প্রকৃতির ছোঁয়ায় <br /> 
+            <span className="text-[#800020]">বাঁশের আভিজাত্য</span>
+          </h1>
+          
+          <p className="text-base text-gray-700 mb-8 max-w-lg mx-auto lg:mx-0">
+            Eco World-এ আপনাকে স্বাগতম। আমাদের টেকসই, দৃষ্টিনন্দন এবং ১০০% অর্গানিক বাঁশের পণ্য আপনার লাইফস্টাইলকে করবে আরও পরিবেশবান্ধব।
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {["Bamboo Products", "Organic Vegetables", "Fresh Fruits", "Natural Groceries"].map((cat, i) => (
-              <div key={i} className="group relative h-80 rounded-3xl overflow-hidden cursor-pointer">
-                <Image
-                  src={`https://picsum.photos/id/${30 + i}/600/600`}
-                  alt={cat}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                <div className="absolute bottom-8 left-8 text-white">
-                  <h3 className="text-2xl font-semibold">{cat}</h3>
-                  <p className="text-sm text-emerald-400 mt-1">Shop Now →</p>
-                </div>
+          {/* 🎋 ৩টি ক্যাটাগরি ফাস্ট অ্যাকশন কার্ড */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
+            
+            {/* ১. Decor Card */}
+            <motion.div 
+              whileHover={{ scale: 1.03, translateY: -3 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => onSelectCategory && onSelectCategory('decor')}
+              className="bg-white/80 hover:bg-[#2D5A27]/10 border border-gray-200 hover:border-[#2D5A27] p-4 rounded-2xl cursor-pointer transition text-center shadow-sm group"
+            >
+              <div className="w-10 h-10 bg-[#2D5A27]/10 text-[#2D5A27] rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:bg-[#2D5A27] group-hover:text-white transition">
+                <Package className="w-5 h-5" />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              <h3 className="font-bold text-sm text-gray-800">হোম ডেকোর</h3>
+              <p className="text-[11px] text-gray-500 mt-0.5">আকর্ষণীয় ডিজাইন</p>
+            </motion.div>
 
-      {/* WHY CHOOSE US */}
-      <section className="py-20 bg-gradient-to-b from-neutral-900 to-neutral-950">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold text-white mb-16">কেন EcoWorld Ghore Bajar?</h2>
+            {/* ২. Kitchenware Card */}
+            <motion.div 
+              whileHover={{ scale: 1.03, translateY: -3 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => onSelectCategory && onSelectCategory('kitchen')}
+              className="bg-white/80 hover:bg-[#800020]/10 border border-gray-200 hover:border-[#800020] p-4 rounded-2xl cursor-pointer transition text-center shadow-sm group"
+            >
+              <div className="w-10 h-10 bg-[#800020]/10 text-[#800020] rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:bg-[#800020] group-hover:text-white transition">
+                <Tag className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-sm text-gray-800">রান্নাঘর</h3>
+              <p className="text-[11px] text-gray-500 mt-0.5">১০০% অর্গানিক</p>
+            </motion.div>
+
+            {/* ৩. Furniture Card */}
+            <motion.div 
+              whileHover={{ scale: 1.03, translateY: -3 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => onSelectCategory && onSelectCategory('furniture')}
+              className="bg-white/80 hover:bg-amber-600/10 border border-gray-200 hover:border-amber-600 p-4 rounded-2xl cursor-pointer transition text-center shadow-sm group"
+            >
+              <div className="w-10 h-10 bg-amber-600/10 text-amber-700 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:bg-amber-600 group-hover:text-white transition">
+                <Truck className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-sm text-gray-800">ফার্নিচার</h3>
+              <p className="text-[11px] text-gray-500 mt-0.5">দীর্ঘস্থায়ী মান</p>
+            </motion.div>
+
+          </div>
+
+          {/* ট্রাস্ট ব্যাজ */}
+          <div className="flex justify-center lg:justify-start gap-6 border-t border-gray-300/60 pt-6 text-sm text-gray-600">
+            <span className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#2D5A27]" /> প্রিমিয়াম কোয়ালিটি
+            </span>
+            <span className="flex items-center gap-2">
+              <RotateCcw className="w-4 h-4 text-[#2D5A27]" /> ১০০% ইকো-ফ্রেন্ডলি
+            </span>
+          </div>
+        </motion.div>
+
+        {/* ২. ডান পাশ: ৪-ইমেজ প্রিমিয়াম গ্রিড (7 Columns) */}
+        <div className="lg:col-span-7 grid grid-cols-12 gap-4 relative">
           
-          <div className="grid md:grid-cols-3 gap-10">
-            <div className="bg-neutral-900 p-8 rounded-3xl border border-maroon-800 hover:border-maroon-600 transition">
-              <div className="w-16 h-16 mx-auto mb-6 bg-emerald-900/50 rounded-2xl flex items-center justify-center">
-                <Leaf size={32} className="text-emerald-400" />
-              </div>
-              <h3 className="text-2xl font-semibold mb-3 text-white">Sustainable</h3>
-              <p className="text-neutral-400">বাঁশ ও পরিবেশবান্ধব প্যাকেজিং ব্যবহার করি</p>
+          {/* ইমেজ ১: মেইন ছবি */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="col-span-7 h-[320px] md:h-[420px] rounded-3xl overflow-hidden shadow-xl border-4 border-white relative group"
+          >
+            <Image fill src={images.main} alt="Main Bamboo Product" className="object-cover group-hover:scale-105 transition duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+            <div className="absolute bottom-4 left-4">
+              <span className="bg-[#2D5A27] text-white text-xs px-3 py-1 rounded-full font-bold">Eco Friendly</span>
             </div>
+          </motion.div>
 
-            <div className="bg-neutral-900 p-8 rounded-3xl border border-maroon-800 hover:border-maroon-600 transition">
-              <div className="w-16 h-16 mx-auto mb-6 bg-amber-900/50 rounded-2xl flex items-center justify-center">
-                <Award size={32} className="text-amber-400" />
-              </div>
-              <h3 className="text-2xl font-semibold mb-3 text-white">Fresh & Pure</h3>
-              <p className="text-neutral-400">সরাসরি কৃষক থেকে, কোনো রাসায়নিক নয়</p>
-            </div>
+          {/* ডান পাশের ছোট ইমেজের কলাম */}
+          <div className="col-span-5 flex flex-col gap-4">
+            
+            {/* ইমেজ ২: টপ রাইট */}
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="h-[150px] md:h-[195px] rounded-3xl overflow-hidden shadow-md border-4 border-white relative group"
+            >
+              <Image fill src={images.decor} alt="Bamboo Decor" className="object-cover group-hover:scale-105 transition duration-500" />
+            </motion.div>
 
-            <div className="bg-neutral-900 p-8 rounded-3xl border border-maroon-800 hover:border-maroon-600 transition">
-              <div className="w-16 h-16 mx-auto mb-6 bg-rose-900/50 rounded-2xl flex items-center justify-center">
-                <ShoppingCart size={32} className="text-rose-400" />
-              </div>
-              <h3 className="text-2xl font-semibold mb-3 text-white">Easy Shopping</h3>
-              <p className="text-neutral-400">ঘরে বসে বাজার করুন, দ্রুত ডেলিভারি</p>
-            </div>
+            {/* ইমেজ ৩: বটম রাইট */}
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="h-[155px] md:h-[210px] rounded-3xl overflow-hidden shadow-md border-4 border-white relative group"
+            >
+              <Image fill src={images.kitchen} alt="Bamboo Kitchenware" className="object-cover group-hover:scale-105 transition duration-500" />
+            </motion.div>
           </div>
-        </div>
-      </section>
 
-      <footer className="bg-neutral-950 py-12 border-t border-maroon-900 text-neutral-400 text-center">
-        <p>© 2026 EcoWorld Ghore Bajar • প্রকৃতির সাথে বাজার করুন</p>
-      </footer>
-    </>
+          {/* ইমেজ ৪: বটম ওয়াইড ছবি */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="col-span-12 h-[130px] md:h-[170px] rounded-3xl overflow-hidden shadow-xl border-4 border-white relative group"
+          >
+            <Image fill src={images.furniture} alt="Bamboo Furniture" className="object-cover group-hover:scale-105 transition duration-500" />
+          </motion.div>
+
+          {/* ফ্লোটিং ব্যাজ */}
+          <motion.div 
+            animate={{ y: [0, -8, 0] }}
+            transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
+            className="absolute -top-5 -left-5 bg-[#800020] text-white px-5 py-3 rounded-2xl shadow-xl border border-white/20 text-center hidden md:block"
+          >
+            <p className="text-[10px] tracking-wider uppercase opacity-80">বিশেষ ধামাকা</p>
+            <p className="text-xl font-black">২০% ছাড়</p>
+          </motion.div>
+
+        </div>
+
+      </div>
+    </div>
   );
-}
+};
+
+export default HeroPage;

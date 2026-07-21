@@ -19,16 +19,16 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li><Link href="/shop" className="hover:text-white">Shop</Link></li>
-              <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-              <li><Link href="/blog" className="hover:text-white">Blog</Link></li>
-              <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
+              <li><Link href="/About" className="hover:text-white">About Us</Link></li>
+      
+              <li><Link href="/FAQ" className="hover:text-white">FAQ</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-semibold mb-4">Contact</h4>
-            <p className="text-sm">+880 1XXX-XXXXXX</p>
-            <p className="text-sm">support@ecoworldbajar.com</p>
+            <p className="text-sm">+880 1823-633271</p>
+            <p className="text-sm">mdmosabbirrahman07@gmail.com</p>
           </div>
 
           <div>

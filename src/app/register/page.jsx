@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Leaf, Eye, EyeOff } from "lucide-react";
-import { authClient } from "../../lib/auth-client";
+import { authClient } from "../lib/auth-client";
 
 export default function Register() {
   const [name, setName] = useState("");
