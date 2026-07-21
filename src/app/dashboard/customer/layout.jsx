@@ -90,10 +90,10 @@ export default function CustomerLayout({ children }) {
           {/* Sidebar Footer (Bottom Fixed) */}
           <div className="p-4 border-t border-gray-100 dark:border-neutral-800 space-y-2 shrink-0">
             <Link href="/" className="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-2xl transition text-sm font-medium">
-              <Home className="w-5 h-5" /> হোমে ফিরে যান
+              <Home className="w-5 h-5" /> Go Back
             </Link>
             <button onClick={handleLogout} className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-2xl transition text-sm font-medium">
-              <LogOut className="w-5 h-5" /> লগআউট
+              <LogOut className="w-5 h-5" /> LOG OUT
             </button>
           </div>
         </div>

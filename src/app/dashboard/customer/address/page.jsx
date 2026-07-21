@@ -14,7 +14,8 @@ import {
   Home, 
   Briefcase 
 } from 'lucide-react';
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '@/app/lib/auth-client';
+// import { authClient } from '@/lib/auth-client';
 
 export default function CustomerAddressPage() {
   const { data: session } = authClient.useSession();
