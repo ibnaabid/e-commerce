@@ -14,7 +14,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '@/app/lib/auth-client';
 
 export default function CustomerMainPage() {
   const { data: session } = authClient.useSession();

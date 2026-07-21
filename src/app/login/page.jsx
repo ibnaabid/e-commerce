@@ -4,6 +4,7 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight, Leaf } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { authClient } from "../lib/auth-client";
+// import { authClient } from "../lib/auth-client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -45,13 +46,10 @@ export default function LoginPage() {
 
       toast.success("Login successful!");
 
-      // Special Admin Check (Gmail দিয়ে Admin ঢুকবে)
-      const adminEmails = [
-        "mdmosabbirrahman07@gmail.com",
-    
-      ];
+      // Admin Email Check & Redirect Logic
+      const adminEmail = "mdmosabbirrahman07@gmail.com";
 
-      if (adminEmails.includes(form.email.toLowerCase())) {
+      if (form.email.toLowerCase() === adminEmail.toLowerCase()) {
         router.push("/dashboard/admin");
       } else {
         router.push("/dashboard/customer");
@@ -68,7 +66,7 @@ export default function LoginPage() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: "",
       });
     } catch (err) {
       toast.error("Google sign-in failed");
@@ -77,142 +75,128 @@ export default function LoginPage() {
     }
   };
 
-  // Demo Button
-  const fillDemo = () => {
-    setForm({ 
-      email: "mdmosabbirrahman07@gmail.com", 
-      password: "123456789" 
-    });
-    toast.success("Demo Admin credentials filled!");
-  };
-
-  const fillCustomerDemo = () => {
-    setForm({ 
-      email: "customer@ecoworldbajar.com", 
-      password: "demo1234" 
-    });
-    toast.info("Customer demo credentials filled!");
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-neutral-50 to-emerald-50">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 bg-slate-50 dark:bg-neutral-950 transition-colors duration-300">
       <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="flex justify-center mb-8">
+        
+        {/* Logo Section */}
+        <div className="flex justify-center mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-700 to-maroon-700 rounded-2xl flex items-center justify-center">
-              <Leaf size={28} className="text-white" />
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-teal-800 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-600/20">
+              <Leaf size={26} className="text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-neutral-900">EcoWorld</h1>
-              <p className="text-maroon-700 text-sm -mt-1">Ghore Bajar</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">EcoWorld</h1>
+              <p className="text-emerald-600 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider -mt-1">Ghore Bajar</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl p-8 border border-neutral-100">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-semibold text-neutral-900">Welcome Back</h1>
-            <p className="text-neutral-600 mt-2">Sign in to your account</p>
-          </div>
-
-          {/* Demo Buttons */}
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <button
-              onClick={fillDemo}
-              className="py-2.5 border border-amber-500 text-amber-700 rounded-2xl text-sm font-medium hover:bg-amber-50 transition"
-            >
-              Admin Demo
-            </button>
-            <button
-              onClick={fillCustomerDemo}
-              className="py-2.5 border border-emerald-600 text-emerald-700 rounded-2xl text-sm font-medium hover:bg-emerald-50 transition"
-            >
-              Customer Demo
-            </button>
+        {/* Card Box */}
+        <div className="bg-white dark:bg-neutral-900 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none p-6 sm:p-8 border border-gray-100 dark:border-neutral-800 transition-all">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome Back</h2>
+            <p className="text-gray-500 dark:text-neutral-400 text-sm mt-1">Sign in to your account</p>
           </div>
 
           {errors.general && (
-            <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-2xl mb-6 text-center text-sm">
+            <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 p-3.5 rounded-2xl mb-6 text-center text-sm">
               {errors.general}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email Field */}
             <div>
-              <label className="text-sm font-medium text-neutral-700 block mb-2">Email Address</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-neutral-300 block mb-1.5">
+                Email Address
+              </label>
               <div className="relative">
-                <Mail size={20} className="absolute left-4 top-3.5 text-neutral-400" />
+                <Mail size={18} className="absolute left-4 top-3.5 text-gray-400 dark:text-neutral-500" />
                 <input
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="you@example.com"
-                  className="w-full pl-11 py-3.5 border border-neutral-300 rounded-2xl focus:border-emerald-600 focus:ring-1 outline-none transition"
+                  className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-neutral-800/50 border border-gray-200 dark:border-neutral-700 rounded-2xl text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-neutral-500 focus:border-emerald-500 dark:focus:border-emerald-500 focus:bg-white dark:focus:bg-neutral-900 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-sm"
                 />
               </div>
-              {errors.email && <p className="text-red-500 text-xs mt-1.5">{errors.email}</p>}
+              {errors.email && <p className="text-red-500 text-xs mt-1.5 pl-1">{errors.email}</p>}
             </div>
 
+            {/* Password Field */}
             <div>
-              <div className="flex justify-between mb-2">
-                <label className="text-sm font-medium text-neutral-700">Password</label>
-                <a href="/forgot-password" className="text-sm text-emerald-700 hover:underline">Forgot Password?</a>
+              <div className="flex justify-between items-center mb-1.5">
+                <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">
+                  Password
+                </label>
+                <a href="/forgot-password" className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+                  Forgot?
+                </a>
               </div>
               <div className="relative">
-                <Lock size={20} className="absolute left-4 top-3.5 text-neutral-400" />
+                <Lock size={18} className="absolute left-4 top-3.5 text-gray-400 dark:text-neutral-500" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   placeholder="••••••••"
-                  className="w-full pl-11 pr-12 py-3.5 border border-neutral-300 rounded-2xl focus:border-emerald-600 focus:ring-1 outline-none transition"
+                  className="w-full pl-11 pr-11 py-3 bg-gray-50 dark:bg-neutral-800/50 border border-gray-200 dark:border-neutral-700 rounded-2xl text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-neutral-500 focus:border-emerald-500 dark:focus:border-emerald-500 focus:bg-white dark:focus:bg-neutral-900 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-sm"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-3.5 text-neutral-400 hover:text-neutral-600"
+                  className="absolute right-4 top-3.5 text-gray-400 dark:text-neutral-500 hover:text-gray-600 dark:hover:text-neutral-300 transition"
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              {errors.password && <p className="text-red-500 text-xs mt-1.5">{errors.password}</p>}
+              {errors.password && <p className="text-red-500 text-xs mt-1.5 pl-1">{errors.password}</p>}
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-emerald-700 to-maroon-700 hover:from-emerald-800 hover:to-maroon-800 text-white rounded-2xl font-semibold flex items-center justify-center gap-2 transition-all disabled:opacity-70"
+              className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 transition-all active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {loading ? "Signing in..." : "Sign In"}
-              {!loading && <ArrowRight size={20} />}
+              {!loading && <ArrowRight size={18} />}
             </button>
           </form>
 
-          {/* Google Login */}
-          <div className="my-8 flex items-center gap-3">
-            <div className="flex-1 h-px bg-neutral-200" />
-            <span className="text-xs text-neutral-500">OR</span>
-            <div className="flex-1 h-px bg-neutral-200" />
+          {/* Divider */}
+          <div className="my-6 flex items-center gap-3">
+            <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-800" />
+            <span className="text-xs text-gray-400 dark:text-neutral-500 font-medium uppercase">Or</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-800" />
           </div>
 
+          {/* Google Button */}
           <button
+            type="button"
             onClick={handleGoogleSignIn}
             disabled={googleLoading}
-            className="w-full py-4 border border-neutral-300 rounded-2xl flex items-center justify-center gap-3 hover:bg-neutral-50 font-medium transition disabled:opacity-70"
+            className="w-full py-3 bg-gray-50 dark:bg-neutral-800/60 hover:bg-gray-100 dark:hover:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-2xl text-gray-700 dark:text-neutral-200 font-medium text-sm flex items-center justify-center gap-3 transition active:scale-[0.99] disabled:opacity-70"
           >
-            <svg width="20" height="20" viewBox="0 0 48 48">
+            <svg width="18" height="18" viewBox="0 0 48 48">
               <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34 5.1 29.3 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.1-2.4-.4-3.5z" />
-              {/* ... other paths same as before */}
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16.1 19 13.5 24 13.5c3.1 0 5.8 1.1 8 3l6-6C34 5.1 29.3 3 24 3 16.3 3 9.6 7.8 6.3 14.7z" />
+              <path fill="#4CAF50" d="M24 45c5.2 0 10-1.9 13.6-5.1l-6.3-5.2c-2.1 1.4-4.7 2.3-7.3 2.3-5.3 0-9.7-3.4-11.3-8l-6.6 5.1C9.5 40.1 16.2 45 24 45z" />
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.3 5.2c3.7-3.4 6-8.5 6-14.9 0-1.4-.1-2.4-.4-3.5z" />
             </svg>
             {googleLoading ? "Connecting..." : "Continue with Google"}
           </button>
         </div>
 
-        <p className="text-center text-neutral-500 text-sm mt-8">
+        {/* Footer Link */}
+        <p className="text-center text-gray-500 dark:text-neutral-400 text-sm mt-6">
           New to EcoWorld?{" "}
-          <a href="/register" className="text-emerald-700 font-medium hover:underline">Create Account</a>
+          <a href="/register" className="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">
+            Create Account
+          </a>
         </p>
+
       </div>
     </div>
   );

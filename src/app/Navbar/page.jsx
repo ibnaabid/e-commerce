@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
 import {
   Menu,
   X,
@@ -21,14 +20,38 @@ export default function Navbar() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
-  
-  // Theme Toggle Hooks
-  const { theme, setTheme } = useTheme();
+
+  // 🌓 Pure React Theme Handling State
+  const [theme, setTheme] = useState("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    // LocalStorage অথবা System Preference থেকে থিম চেক করা
+    const savedTheme = localStorage.getItem("theme");
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    if (savedTheme === "dark" || (!savedTheme && systemPrefersDark)) {
+      setTheme("dark");
+      document.documentElement.classList.add("dark");
+    } else {
+      setTheme("light");
+      document.documentElement.classList.remove("dark");
+    }
   }, []);
+
+  // Theme Toggle Functionality
+  const toggleTheme = () => {
+    if (theme === "dark") {
+      setTheme("light");
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    } else {
+      setTheme("dark");
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    }
+  };
 
   const user = session?.user;
   const role = user?.role || "customer";
@@ -84,14 +107,14 @@ export default function Navbar() {
             {/* 🌗 Dark / Light Mode Toggle Button */}
             {mounted && (
               <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2.5 rounded-2xl bg-gray-100 dark:bg-neutral-900 border border-gray-200 dark:border-maroon-800 text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white transition-all duration-200"
+                onClick={toggleTheme}
+                className="p-2.5 rounded-2xl bg-gray-800 dark:bg-neutral-900 border border-gray-400 dark:border-maroon-800 text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white transition-all duration-200"
                 aria-label="Toggle Theme"
               >
                 {theme === "dark" ? (
                   <Sun size={19} className="text-amber-400" />
                 ) : (
-                  <Moon size={19} className="text-neutral-700" />
+                  <Moon size={19} className="text-neutral-800" />
                 )}
               </button>
             )}
@@ -149,7 +172,7 @@ export default function Navbar() {
             {/* Mobile Theme Toggle */}
             {mounted && (
               <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onClick={toggleTheme}
                 className="p-2 rounded-xl bg-gray-100 dark:bg-neutral-900 border border-gray-200 dark:border-maroon-800 text-gray-700 dark:text-neutral-300"
               >
                 {theme === "dark" ? (
