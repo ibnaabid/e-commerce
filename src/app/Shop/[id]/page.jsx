@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Loader2, Plus, Minus, ShoppingCart, Heart, ShieldCheck, Leaf } from "lucide-react";
 import AddToCart from "../AddToCart";
 import FavoriteBtn from "./Favbtn";
+import WhatsAppBtn from "@/app/whatsapp/page";
 // import AddToCart from "@/components/AddToCart";   // তোমার AddToCart কম্পোনেন্ট
 
 export default function ProductDetailPage() {
@@ -121,6 +122,7 @@ export default function ProductDetailPage() {
 
             <div className="pt-6 border-t border-white/10">
               <FavoriteBtn product={product} />
+              <WhatsAppBtn product={product}/>
             </div>
             
 

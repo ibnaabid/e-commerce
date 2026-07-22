@@ -32,6 +32,10 @@ export default function Footer() {
           </div>
 
           <div>
+           <Link href="https://www.facebook.com/profile.php?id=61579260665233" className="text-green-400 hover:bg-amber-200 rounded-3xl px-4 border-red-300 font-bold">VISIT OUR PAGE :</Link>
+          </div>
+
+          <div>
             <h4 className="text-white font-semibold mb-4">Newsletter</h4>
             <input 
               type="email" 
@@ -42,7 +46,7 @@ export default function Footer() {
         </div>
 
         <div className="text-center mt-16 pt-8 border-t border-neutral-800 text-xs">
-          © 2026 EcoWorld Ghore Bajar • All Rights Reserved
+          © 2026 EcoWorld  • All Rights Reserved
         </div>
       </div>
     </footer>
