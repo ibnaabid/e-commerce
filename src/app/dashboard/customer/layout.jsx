@@ -14,6 +14,7 @@ import {
   Home
 } from 'lucide-react';
 import { authClient } from '@/app/lib/auth-client';
+import { Star } from '@gravity-ui/icons';
 
 export default function CustomerLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -26,7 +27,7 @@ export default function CustomerLayout({ children }) {
 
   const navItems = [
     { name: 'My Profile', href: '/dashboard/customer', icon: User },
-    { name: 'My Orders', href: '/dashboard/customer/orders', icon: ShoppingBag },
+    { name: 'My Review', href: '/dashboard/customer/Review', icon: Star },
     { name: 'Wishlist', href: '/dashboard/customer/wishlist', icon: Heart },
     { name: 'Addresses', href: '/dashboard/customer/address', icon: MapPin },
   ];

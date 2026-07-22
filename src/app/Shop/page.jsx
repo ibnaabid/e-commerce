@@ -1,20 +1,12 @@
-// app/shop/page.jsx
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Loader2, Search, Leaf, ShieldCheck } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { Loader2, Search, Leaf, ShieldCheck, Eye } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import AddToCart from "./AddToCart";
 
-// ডাটাবেজের ক্যাটাগরি অনুযায়ী লিস্ট
-const categories = [
-  "All",
-  "Bamboo",
-  "Jute",
-  "Hogla",
-  "Shatranji",
-  "Kaisa",
-  "Other",
-];
+const categories = ["All", "Bamboo", "Jute", "Hogla", "Shatranji", "Kaisa", "Other"];
 
 export default function EcoShopPage() {
   const [products, setProducts] = useState([]);
@@ -25,128 +17,99 @@ export default function EcoShopPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sort, setSort] = useState("");
 
-  // 🔄 ক্যাটাগরি পরিবর্তন হলে ব্যাকএন্ড থেকে ডাটা ফেচ হবে
+  // Fetch Products
   useEffect(() => {
-    const getProducts = async () => {
+    const fetchProducts = async () => {
       setLoading(true);
-      setError("");
       try {
-        const url =
-          selectedCategory === "All"
-            ? "http://localhost:5000/products"
-            : `http://localhost:5000/products?category=${encodeURIComponent(
-                selectedCategory
-              )}`;
+        const url = selectedCategory === "All"
+          ? "http://localhost:5000/products"
+          : `http://localhost:5000/products?category=${encodeURIComponent(selectedCategory)}`;
 
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error("Failed to load products");
-
+        const res = await fetch(url);
         const data = await res.json();
-        setProducts(data);
+        setProducts(Array.isArray(data) ? data : []);
       } catch (err) {
-        setError(err.message || "Could not connect to the server");
+        setError("Failed to load products. Please try again.");
       } finally {
         setLoading(false);
       }
     };
 
-    getProducts();
+    fetchProducts();
   }, [selectedCategory]);
 
-  // Client-side search and sorting
-  const filteredProducts = products
-    .filter((product) => {
+  // Filtered & Sorted Products
+  const filteredProducts = useMemo(() => {
+    let result = products.filter((p) => {
+      const query = search.toLowerCase();
       return (
-        product.name?.toLowerCase().includes(search.toLowerCase()) ||
-        product.description?.toLowerCase().includes(search.toLowerCase())
+        p.name?.toLowerCase().includes(query) ||
+        p.description?.toLowerCase().includes(query)
       );
-    })
-    .sort((a, b) => {
-      if (sort === "low") return a.price - b.price;
-      if (sort === "high") return b.price - a.price;
-      return 0;
     });
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-neutral-950 flex items-center justify-center px-4">
-        <div className="text-center p-8 backdrop-blur-xl bg-white/5 border border-red-500/20 rounded-2xl max-w-sm">
-          <p className="text-red-400 font-semibold mb-2">Error occurred</p>
-          <p className="text-xs text-neutral-500 mb-5">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2.5 text-xs text-white rounded-lg font-medium bg-emerald-600 hover:bg-emerald-500 transition-colors"
-          >
-            Try again
-          </button>
-        </div>
-      </div>
-    );
-  }
+    if (sort === "low") result.sort((a, b) => a.price - b.price);
+    if (sort === "high") result.sort((a, b) => b.price - a.price);
+
+    return result;
+  }, [products, search, sort]);
 
   return (
-    <div className="min-h-screen bg-neutral-950 relative overflow-hidden text-neutral-100">
-      {/* Background Effect */}
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-teal-600/15 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-neutral-950 text-white">
+      {/* Subtle Background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-emerald-950/20 via-transparent to-teal-950/20 pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        {/* Header */}
-        <div className="text-center max-w-xl mx-auto mb-12">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-4 text-xs font-medium text-emerald-400">
-            <Leaf size={14} /> 100% Sustainable & Handcrafted
-          </span>
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-3">
-            EcoWorld Marketplace
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        
+        {/* Header Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-6 py-2 bg-emerald-900/50 border border-emerald-500/30 rounded-full text-sm mb-6">
+            <Leaf className="text-emerald-400" size={18} />
+            100% Natural • Handcrafted in Bangladesh
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold tracking-tighter mb-4">
+            Discover EcoWorld
           </h1>
-          <p className="text-sm text-neutral-400 leading-relaxed">
-            Explore eco-friendly products made from natural materials.
+          <p className="text-neutral-400 text-lg max-w-xl mx-auto">
+            Sustainable products made with love for our planet
           </p>
         </div>
 
-        {/* Search & Sort */}
-        <div className="flex flex-col lg:flex-row gap-3 mb-8">
+        {/* Filters */}
+        <div className="flex flex-col md:flex-row gap-4 mb-12 bg-neutral-900/70 backdrop-blur-xl p-5 rounded-3xl border border-white/10 sticky top-4 z-40">
           <div className="relative flex-1">
-            <Search
-              size={16}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500"
-            />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-neutral-500" size={20} />
             <input
               type="text"
-              placeholder="Search eco products..."
+              placeholder="Search natural products..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:border-emerald-500 focus:outline-none rounded-lg pl-10 pr-4 py-2.5 text-sm transition-colors"
+              className="w-full bg-neutral-800 border border-white/10 focus:border-emerald-500 rounded-2xl pl-12 py-3.5 placeholder:text-neutral-500 focus:outline-none"
             />
           </div>
 
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="bg-white/5 border border-white/10 text-white text-sm rounded-lg px-4 py-2.5 focus:border-emerald-500 focus:outline-none transition-colors"
+            className="bg-neutral-800 border border-white/10 rounded-2xl px-6 py-3.5 focus:border-emerald-500 focus:outline-none"
           >
-            <option value="" className="bg-neutral-900">
-              Sort by
-            </option>
-            <option value="low" className="bg-neutral-900">
-              Price: Low to High
-            </option>
-            <option value="high" className="bg-neutral-900">
-              Price: High to Low
-            </option>
+            <option value="">Sort By</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
           </select>
         </div>
 
-        {/* 🏷️ Dynamic Category Buttons */}
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-8 -mx-1 px-1">
+        {/* Categories */}
+        <div className="flex gap-3 overflow-x-auto pb-8 mb-12 hide-scroll">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`shrink-0 px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
+              className={`px-8 py-3 rounded-2xl text-sm font-medium whitespace-nowrap transition-all ${
                 selectedCategory === cat
-                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-900/40"
-                  : "bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:border-white/20"
+                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-700"
+                  : "bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30"
               }`}
             >
               {cat}
@@ -154,66 +117,67 @@ export default function EcoShopPage() {
           ))}
         </div>
 
-        {/* 📦 Product Grid / Loader */}
+        {/* Product Grid */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Loader2 className="animate-spin text-emerald-400" size={36} />
-            <p className="text-sm font-medium text-neutral-400">
-              Filtering products...
-            </p>
+          <div className="flex flex-col items-center justify-center py-32">
+            <Loader2 className="animate-spin text-emerald-500" size={55} />
+            <p className="mt-6 text-neutral-400">Loading beautiful products...</p>
           </div>
         ) : filteredProducts.length === 0 ? (
-          <div className="text-center py-16 text-neutral-500">
-            No products found for "{selectedCategory}".
+          <div className="text-center py-28">
+            <p className="text-2xl text-neutral-400">No products found</p>
+            <p className="text-neutral-500 mt-2">Try changing your filters</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {filteredProducts.map((product) => (
               <div
                 key={product._id}
-                className="group relative bg-neutral-900/80 border border-white/10 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition-all duration-300 flex flex-col justify-between"
+                className="group bg-neutral-900 border border-white/10 rounded-3xl overflow-hidden hover:border-emerald-500/60 hover:shadow-2xl hover:shadow-emerald-900/20 transition-all duration-500"
               >
-                <div>
-                  <div className="relative h-48 w-full bg-neutral-800 overflow-hidden">
-                    <Image
-                    height={700}
-                    width={700}
-                      src={
-                        Array.isArray(product.images) && product.images.length > 0
-                          ? product.images[0]
-                          : "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=500"
-                      }
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <span className="absolute top-3 right-3 bg-neutral-950/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-semibold text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-                      <ShieldCheck size={12} /> Eco Verified
-                    </span>
-                  </div>
-
-                  <div className="p-4">
-                    <span className="text-[11px] font-medium text-emerald-400 tracking-wider uppercase">
-                      {Array.isArray(product.categories)
-                        ? product.categories.join(", ")
-                        : product.category || "Eco Product"}
-                    </span>
-                    <h3 className="text-base font-semibold text-white mt-1 capitalize line-clamp-1">
-                      {product.name}
-                    </h3>
-                    <p className="text-xs text-neutral-400 mt-1 line-clamp-2 leading-relaxed">
-                      {product.description ||
-                        "Sustainable, zero-waste, and handcrafted eco essential."}
-                    </p>
+                {/* Image */}
+                <div className="relative h-72 overflow-hidden">
+                  <Image
+                    src={product.images?.[0] || "https://placehold.co/600x600?text=Eco+Product"}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute top-4 right-4 bg-black/70 backdrop-blur px-3 py-1 rounded-full text-xs flex items-center gap-1">
+                    <ShieldCheck size={14} className="text-emerald-400" />
+                    Verified
                   </div>
                 </div>
 
-                <div className="p-4 pt-0 flex items-center justify-between border-t border-white/5 mt-3">
-                  <span className="text-lg font-bold text-white">
-                    ৳{product.price}
+                {/* Info */}
+                <div className="p-6 flex flex-col flex-1">
+                  <span className="text-emerald-400 text-xs tracking-widest font-medium">
+                    {product.category}
                   </span>
-                  <button className="px-3.5 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-colors">
-                    Add to Cart
-                  </button>
+
+                  <h3 className="font-semibold text-xl mt-2 line-clamp-2">
+                    {product.name}
+                  </h3>
+
+                  <p className="text-neutral-400 text-sm mt-3 line-clamp-3 flex-1">
+                    {product.description}
+                  </p>
+
+                  <div className="mt-6 flex items-center justify-between">
+                    <span className="text-3xl font-bold text-white">৳{product.price}</span>
+
+                    <div className="flex gap-3">
+                     
+                      <AddToCart product={product} />
+                       <Link
+                        href={`/Shop/${product._id}`}
+                        className="h-11 w-14 flex items-center justify-center border border-white/20 rounded-2xl hover:bg-white/10 transition"
+                        title="View Product"
+                      >
+                        <Eye size={20} /> 
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}

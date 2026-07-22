@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import Navbar from "../../components/Navbar";
+// import Navbar from "../../components/Navbar";
 
 const faqs = [
   { q: "ডেলিভারি কত সময় নেয়?", a: "ঢাকার ভিতরে ৬০-৯০ মিনিটের মধ্যে ডেলিভারি করা হয়।" },
-  { q: "পেমেন্ট কীভাবে করব?", a: "Cash on Delivery, bKash, Nagad, Rocket সব পেমেন্ট অপশন আছে।" },
+  // { q: "পেমেন্ট কীভাবে করব?", a: "Cash on Delivery, bKash, Nagad, Rocket সব পেমেন্ট অপশন আছে।" },
   { q: "পণ্য ফেরত দেওয়া যাবে?", a: "হ্যাঁ, ডেলিভারির ২৪ ঘণ্টার মধ্যে ফেরত দেওয়া যাবে যদি পণ্য খারাপ হয়।" },
   { q: "অর্গানিক প্রোডাক্টের গ্যারান্টি আছে?", a: "১০০% গ্যারান্টি। কোনো সমস্যা হলে টাকা ফেরত।" },
 ];
@@ -17,7 +17,7 @@ export default function FAQ() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="bg-neutral-950 min-h-screen py-20 text-white">
         <div className="max-w-3xl mx-auto px-6">
           <h1 className="text-5xl font-bold text-center mb-16">Frequently Asked Questions</h1>

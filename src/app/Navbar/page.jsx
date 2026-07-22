@@ -13,8 +13,11 @@ import {
   Leaf,
   Sun,
   Moon,
+  Heart,
 } from "lucide-react";
 import { authClient } from "../lib/auth-client";
+import Cart from "./cartIcon";
+import NavbarCart from "./cartIcon";
 
 export default function Navbar() {
   const router = useRouter();
@@ -68,7 +71,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Home", href: "/", icon: Home },
-    { label: "Categories", href: "/categories", icon: Leaf },
+    { label: "Wishlist", href: "/wishlist", icon: Heart },
     { label: "About", href: "/About", icon: Info },
     { label: "Contact", href: "/contact", icon: Phone },
   ];
@@ -140,6 +143,7 @@ export default function Navbar() {
                   <LayoutDashboard size={17} />
                   Dashboard
                 </Link>
+                <NavbarCart/>
 
                 <button
                   onClick={handleLogout}
