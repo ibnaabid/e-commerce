@@ -22,7 +22,7 @@ export default function CartPage() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:5000/cart?email=${userEmail}`);
+      const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/cart?email=${userEmail}`);
       if (res.ok) {
         const data = await res.json();
         setCartItems(data);
@@ -44,7 +44,7 @@ export default function CartPage() {
   const handleDelete = async (id) => {
     setActionLoading(id);
     try {
-      const res = await fetch(`http://localhost:5000/cart/${id}`, {
+      const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/cart/${id}`, {
         method: "DELETE",
       });
 

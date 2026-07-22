@@ -22,7 +22,7 @@ export default function ProductDetailPage() {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/products/${id}`);
+        const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/products/${id}`);
 
         if (!res.ok) throw new Error("Product not found");
 

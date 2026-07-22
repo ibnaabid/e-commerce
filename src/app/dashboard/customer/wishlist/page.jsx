@@ -23,7 +23,7 @@ export default function WishlistPage() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:5000/wishlist?email=${userEmail}`);
+      const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/wishlist?email=${userEmail}`);
       if (res.ok) {
         const data = await res.json();
         setWishlistItems(data);
@@ -45,7 +45,7 @@ export default function WishlistPage() {
   const handleDelete = async (id) => {
     setActionLoading(id);
     try {
-      const res = await fetch(`http://localhost:5000/wishlist/${id}`, {
+      const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/wishlist/${id}`, {
         method: "DELETE",
       });
 
@@ -75,7 +75,7 @@ export default function WishlistPage() {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/cart", {
+      const res = await fetch("https://e-commerce-backend-kappa-nine.vercel.app/cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cartItem),

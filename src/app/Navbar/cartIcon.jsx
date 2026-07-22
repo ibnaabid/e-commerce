@@ -21,7 +21,7 @@ export default function NavbarCart() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/cart?email=${userEmail}`);
+      const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/cart?email=${userEmail}`);
       if (res.ok) {
         const data = await res.json();
         const total = data.reduce((acc, item) => acc + (item.quantity || 1), 0);

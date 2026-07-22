@@ -11,7 +11,7 @@ export default function AllUsersTable() {
   // Fetch All Users
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/user"); // তোমার endpoint অনুযায়ী চেঞ্জ করো
+      const res = await fetch("https://e-commerce-backend-kappa-nine.vercel.app/user"); // তোমার endpoint অনুযায়ী চেঞ্জ করো
       const data = await res.json();
       setUsers(data);
     } catch (error) {
@@ -31,7 +31,7 @@ export default function AllUsersTable() {
     if (!confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/user/${id}`, {
+      const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/user/${id}`, {
         method: "DELETE",
       });
 

@@ -22,7 +22,7 @@ export default function FavoriteBtn({ product }) {
 
     const checkWishlist = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/wishlist/check?email=${userEmail}&productId=${productId}`);
+        const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/wishlist/check?email=${userEmail}&productId=${productId}`);
         if (res.ok) {
           const data = await res.json();
           setIsFav(data.isFavorite);
@@ -55,7 +55,7 @@ export default function FavoriteBtn({ product }) {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/wishlist", {
+      const res = await fetch("https://e-commerce-backend-kappa-nine.vercel.app/wishlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(wishlistItem),

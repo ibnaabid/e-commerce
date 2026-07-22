@@ -20,7 +20,7 @@ export default function ManageProductsPage() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/products');
+      const res = await fetch('https://e-commerce-backend-kappa-nine.vercel.app/products');
       const data = await res.json();
       setProducts(Array.isArray(data) ? data : data.products || []);
     } catch (err) {
@@ -186,7 +186,7 @@ export default function ManageProductsPage() {
         onConfirm={async () => {
           if (!activeDeleteProduct?._id) return;
           
-          await fetch(`http://localhost:5000/products/${activeDeleteProduct._id}`, {
+          await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/products/${activeDeleteProduct._id}`, {
             method: "DELETE",
           });
           handleDeleteSuccess(activeDeleteProduct._id);

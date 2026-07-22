@@ -47,7 +47,7 @@ export default function AddToCart({ product }) {
 
     try {
       // 📡 Backend API Call
-      const res = await fetch("http://localhost:5000/cart", {
+      const res = await fetch("https://e-commerce-backend-kappa-nine.vercel.app/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

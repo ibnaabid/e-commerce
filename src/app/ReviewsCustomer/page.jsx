@@ -11,7 +11,7 @@ export default function AllReviewsList() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await fetch("http://localhost:5000/reviews");
+        const res = await fetch("https://e-commerce-backend-kappa-nine.vercel.app/reviews");
         if (res.ok) {
           const data = await res.json();
           // ব্যাকএন্ড থেকে আসা অবজেক্ট বা এরে হ্যান্ডেল করা

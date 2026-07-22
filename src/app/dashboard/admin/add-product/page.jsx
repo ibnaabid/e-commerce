@@ -72,7 +72,7 @@ export default function AdminAddProduct() {
 
     try {
       // 🌐 আপনার আসল API Endpoint এখানে বসান
-      const response = await fetch('http://localhost:5000/products', {
+      const response = await fetch('https://e-commerce-backend-kappa-nine.vercel.app/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

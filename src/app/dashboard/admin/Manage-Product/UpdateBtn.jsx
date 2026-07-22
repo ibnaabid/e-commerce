@@ -74,7 +74,7 @@ export default function UpdateProductModal({ isOpen, onClose, product, onUpdateS
 
     try {
       const productId = product._id || product.id;
-      const res = await fetch(`http://localhost:5000/products/${productId}`, {
+      const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/products/${productId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

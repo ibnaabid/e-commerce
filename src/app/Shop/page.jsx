@@ -23,8 +23,8 @@ export default function EcoShopPage() {
       setLoading(true);
       try {
         const url = selectedCategory === "All"
-          ? "http://localhost:5000/products"
-          : `http://localhost:5000/products?category=${encodeURIComponent(selectedCategory)}`;
+          ? "https://e-commerce-backend-kappa-nine.vercel.app/products"
+          : `https://e-commerce-backend-kappa-nine.vercel.app/products?category=${encodeURIComponent(selectedCategory)}`;
 
         const res = await fetch(url);
         const data = await res.json();
