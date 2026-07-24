@@ -1,7 +1,9 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   Menu,
   X,
@@ -14,9 +16,9 @@ import {
   Sun,
   Moon,
   Heart,
+  Sparkles,
 } from "lucide-react";
 import { authClient } from "../lib/auth-client";
-import Cart from "./cartIcon";
 import NavbarCart from "./cartIcon";
 
 export default function Navbar() {
@@ -24,13 +26,28 @@ export default function Navbar() {
   const { data: session, isPending } = authClient.useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // 🌓 Pure React Theme Handling State
+  // 🚀 Scroll State: স্ক্রোল করলে নেভবার কিছুটা ছোট ও শ্যাডো যুক্ত হয়ে এনিমেশন করবে
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // 🌓 Pure React Theme Handling
   const [theme, setTheme] = useState("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    // LocalStorage অথবা System Preference থেকে থিম চেক করা
     const savedTheme = localStorage.getItem("theme");
     const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
@@ -43,7 +60,6 @@ export default function Navbar() {
     }
   }, []);
 
-  // Theme Toggle Functionality
   const toggleTheme = () => {
     if (theme === "dark") {
       setTheme("light");
@@ -77,107 +93,62 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-neutral-950/90 border-b border-gray-200 dark:border-maroon-800 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-maroon-700 to-rose-700 flex items-center justify-center">
-              <Leaf size={20} className="text-white" />
+    <motion.nav
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className={`sticky top-0 z-50 transition-all duration-300 ease-in-out backdrop-blur-2xl ${
+        scrolled
+          ? "bg-white/90 dark:bg-neutral-950/95 shadow-lg border-b border-gray-200/80 dark:border-emerald-900/40 py-1"
+          : "bg-white/60 dark:bg-neutral-950/70 border-b border-transparent py-3"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        <div
+          className={`flex items-center justify-between transition-all duration-300 ${
+            scrolled ? "h-16" : "h-20"
+          }`}
+        >
+          {/* 🌿 Animated EcoWorld Logo */}
+          <Link
+            href="/"
+            className="flex items-center gap-3 shrink-0 my-1 py-1.5 px-3 rounded-2xl hover:bg-emerald-500/10 transition-all duration-300 group"
+          >
+            <div className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-green-400 text-white shadow-lg shadow-emerald-500/25 group-hover:scale-105 transition-transform duration-300">
+              <Leaf size={22} className="animate-pulse" />
+              <Sparkles size={12} className="absolute -top-1 -right-1 text-amber-300" />
             </div>
-            <div>
-              <span className="text-gray-900 dark:text-white font-bold text-xl tracking-tight">
+            <div className="flex flex-col">
+              <span className="text-gray-900 dark:text-white font-extrabold text-2xl tracking-tight leading-none bg-gradient-to-r from-emerald-600 via-teal-500 to-green-400 bg-clip-text text-transparent">
                 EcoWorld
+              </span>
+              <span className="text-[10px] tracking-[2px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase mt-0.5">
+                Handicraft
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex items-center gap-1 bg-gray-100/70 dark:bg-neutral-900/80 p-1.5 rounded-2xl border border-gray-200/60 dark:border-white/5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="px-5 py-2 rounded-xl text-sm text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
+                className="px-5 py-2 rounded-xl text-sm font-medium text-gray-700 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-white dark:hover:bg-neutral-800 transition-all duration-200"
               >
                 {link.label}
               </Link>
             ))}
           </div>
 
-          {/* Desktop Right Side */}
+          {/* Desktop Right Side Controls */}
           <div className="hidden md:flex items-center gap-3">
-            {/* 🌗 Dark / Light Mode Toggle Button */}
+            {/* Dark / Light Toggle */}
             {mounted && (
               <button
                 onClick={toggleTheme}
-                className="p-2.5 rounded-2xl bg-gray-800 dark:bg-neutral-900 border border-gray-400 dark:border-maroon-800 text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white transition-all duration-200"
+                className="p-2.5 rounded-2xl bg-gray-100 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 text-gray-700 dark:text-neutral-300 hover:scale-105 active:scale-95 transition-all duration-200 shadow-sm"
                 aria-label="Toggle Theme"
-              >
-                {theme === "dark" ? (
-                  <Sun size={19} className="text-amber-400" />
-                ) : (
-                  <Moon size={19} className="text-neutral-800" />
-                )}
-              </button>
-            )}
-
-            {isPending ? (
-              <div className="w-32 h-9 rounded-xl bg-gray-200 dark:bg-white/5 animate-pulse" />
-            ) : user ? (
-              <div className="flex items-center gap-3">
-                {/* User Info */}
-                <div className="flex items-center gap-2 pl-3 pr-5 py-1.5 rounded-2xl bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-maroon-800">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-maroon-600 to-rose-600 flex items-center justify-center text-sm font-bold text-white">
-                    {userInitial}
-                  </div>
-                  <span className="text-sm text-gray-800 dark:text-neutral-200 truncate max-w-[150px]">
-                    {userName}
-                  </span>
-                </div>
-
-                <Link
-                  href={dashboardLink}
-                  className="flex items-center gap-2 px-6 py-2.5 rounded-2xl text-sm font-semibold bg-maroon-700 hover:bg-maroon-600 text-white transition-all"
-                >
-                  <LayoutDashboard size={17} />
-                  Dashboard
-                </Link>
-                <NavbarCart/>
-
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm text-gray-700 dark:text-neutral-300 hover:text-red-500 hover:bg-red-500/10 transition-all"
-                >
-                  <LogOut size={17} />
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link
-                  href="/login"
-                  className="px-6 py-2.5 rounded-2xl text-sm text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-all"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  className="px-6 py-2.5 rounded-2xl text-sm font-semibold bg-gradient-to-r from-maroon-600 to-rose-600 hover:from-maroon-700 hover:to-rose-700 text-white transition-all"
-                >
-                  Register
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* Mobile Right Controls */}
-          <div className="flex items-center gap-2 md:hidden">
-            {/* Mobile Theme Toggle */}
-            {mounted && (
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-xl bg-gray-100 dark:bg-neutral-900 border border-gray-200 dark:border-maroon-800 text-gray-700 dark:text-neutral-300"
               >
                 {theme === "dark" ? (
                   <Sun size={20} className="text-amber-400" />
@@ -187,28 +158,90 @@ export default function Navbar() {
               </button>
             )}
 
-            {/* Mobile Menu Button */}
+            {isPending ? (
+              <div className="w-32 h-10 rounded-2xl bg-gray-200 dark:bg-white/5 animate-pulse" />
+            ) : user ? (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 pl-3 pr-4 py-1.5 rounded-2xl bg-gray-100/80 dark:bg-neutral-900 border border-gray-200/80 dark:border-neutral-800">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-xs font-bold text-white shadow-sm">
+                    {userInitial}
+                  </div>
+                  <span className="text-sm font-medium text-gray-800 dark:text-neutral-200 truncate max-w-[120px]">
+                    {userName}
+                  </span>
+                </div>
+
+                <Link
+                  href={dashboardLink}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-md shadow-emerald-600/20"
+                >
+                  <LayoutDashboard size={18} />
+                  Dashboard
+                </Link>
+
+                <NavbarCart />
+
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-medium text-gray-700 dark:text-neutral-300 hover:text-red-500 hover:bg-red-500/10 transition-all"
+                >
+                  <LogOut size={18} />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/login"
+                  className="px-6 py-2.5 rounded-2xl text-sm font-medium text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-all"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className="px-6 py-2.5 rounded-2xl text-sm font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white transition-all shadow-md shadow-emerald-600/20"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Right Controls */}
+          <div className="flex items-center gap-3 md:hidden">
+            {mounted && (
+              <button
+                onClick={toggleTheme}
+                className="p-2.5 rounded-2xl bg-gray-100 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 text-gray-700 dark:text-neutral-300"
+              >
+                {theme === "dark" ? (
+                  <Sun size={20} className="text-amber-400" />
+                ) : (
+                  <Moon size={20} className="text-neutral-700" />
+                )}
+              </button>
+            )}
+
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white p-2"
+              className="p-2.5 rounded-2xl text-gray-700 dark:text-neutral-300 bg-gray-100 dark:bg-neutral-900"
             >
-              {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Dropdown */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-gray-200 dark:border-maroon-900 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-xl px-4 py-5 space-y-1">
+        <div className="md:hidden border-t border-gray-200 dark:border-neutral-800 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-2xl px-6 py-6 space-y-2">
           {user && (
-            <div className="flex items-center gap-3 px-4 py-4 mb-4 bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-maroon-800 rounded-2xl">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-maroon-600 to-rose-600 flex items-center justify-center text-xl font-bold text-white">
+            <div className="flex items-center gap-3 px-4 py-3 mb-4 bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-2xl">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-lg font-bold text-white">
                 {userInitial}
               </div>
               <div>
                 <p className="font-semibold text-gray-900 dark:text-white">{userName}</p>
-                <p className="text-xs text-maroon-600 dark:text-maroon-400 capitalize">{role}</p>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 capitalize">{role}</p>
               </div>
             </div>
           )}
@@ -220,9 +253,9 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 px-5 py-4 rounded-2xl text-base text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-maroon-950 hover:text-gray-900 dark:hover:text-white transition-all"
+                className="flex items-center gap-3 px-5 py-3.5 rounded-2xl text-base font-medium text-gray-700 dark:text-neutral-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all"
               >
-                <Icon size={22} />
+                <Icon size={20} />
                 {link.label}
               </Link>
             );
@@ -233,9 +266,9 @@ export default function Navbar() {
               <Link
                 href={dashboardLink}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 px-5 py-4 rounded-2xl text-base font-medium bg-maroon-700 text-white mt-3"
+                className="flex items-center gap-3 px-5 py-3.5 rounded-2xl text-base font-semibold bg-emerald-600 text-white mt-4 shadow-md"
               >
-                <LayoutDashboard size={22} />
+                <LayoutDashboard size={20} />
                 Dashboard
               </Link>
               <button
@@ -243,9 +276,9 @@ export default function Navbar() {
                   setMobileOpen(false);
                   handleLogout();
                 }}
-                className="flex items-center gap-3 px-5 py-4 rounded-2xl text-base text-red-500 hover:bg-red-500/10 w-full text-left"
+                className="flex items-center gap-3 px-5 py-3.5 rounded-2xl text-base font-medium text-red-500 hover:bg-red-500/10 w-full text-left transition-all"
               >
-                <LogOut size={22} />
+                <LogOut size={20} />
                 Logout
               </button>
             </>
@@ -254,14 +287,14 @@ export default function Navbar() {
               <Link
                 href="/login"
                 onClick={() => setMobileOpen(false)}
-                className="text-center py-4 rounded-2xl border border-gray-300 dark:border-neutral-700 text-gray-700 dark:text-neutral-300 font-medium"
+                className="text-center py-3.5 rounded-2xl border border-gray-300 dark:border-neutral-700 text-gray-700 dark:text-neutral-300 font-medium"
               >
                 Login
               </Link>
               <Link
                 href="/register"
                 onClick={() => setMobileOpen(false)}
-                className="text-center py-4 rounded-2xl bg-gradient-to-r from-maroon-600 to-rose-600 text-white font-semibold"
+                className="text-center py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold shadow-md"
               >
                 Register
               </Link>
@@ -269,6 +302,6 @@ export default function Navbar() {
           )}
         </div>
       )}
-    </nav>
+    </motion.nav>
   );
 }

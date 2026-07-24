@@ -123,7 +123,7 @@ export default function EcoShopPage({ selectedCategory = "All" }) {
             <p className="text-neutral-500 mt-2">Try selecting another category or clearing search</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
               <div
                 key={product._id}
