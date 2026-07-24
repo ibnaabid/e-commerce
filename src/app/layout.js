@@ -32,7 +32,7 @@ export const metadata = {
     description: "টেকসই ও অর্গানিক বাঁশের পণ্য কিনুন সেরা দামে।",
     images: [
       {
-        url: "/logo.png",
+        url: "/https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhuvdQ52dcmjgfpM9RCp2DJol_AzWQ-z0bNl6m1yJc1A&s=10",
         width: 1200,
         height: 630,
         alt: "EcoWorld Logo",
