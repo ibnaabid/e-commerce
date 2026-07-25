@@ -6,6 +6,7 @@ import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, Loader2, ShieldCheck } fro
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "../lib/auth-client";
+import WhatsAppBtn from "../whatsapp/page";
 
 export default function CartPage() {
   const { data: session, status } = useSession();
@@ -215,12 +216,7 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => alert("Proceeding to Checkout!")}
-                  className="w-full mt-6 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3.5 rounded-2xl transition active:scale-[0.98] shadow-lg shadow-emerald-900/30"
-                >
-                  Proceed to Checkout
-                </button>
+                <WhatsAppBtn/>
 
                 <div className="mt-4 flex items-center justify-center gap-1.5 text-xs text-neutral-500">
                   <ShieldCheck size={14} className="text-emerald-400" /> Guaranteed Safe & Secure Checkout
