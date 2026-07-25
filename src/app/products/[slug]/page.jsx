@@ -190,7 +190,7 @@ export default function CategoryProductsPage({ params }) {
                   {/* Image Container */}
                   <div className="relative w-full h-56 bg-slate-100 dark:bg-neutral-800 overflow-hidden">
                     <Image
-                      src={product?.image || "https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop&q=80"}
+                      src={product?.images || "https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop&q=80"}
                       alt={product?.name || "Product"}
                       fill
                       sizes="(max-width: 768px) 100vw, 300px"
