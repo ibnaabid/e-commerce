@@ -104,7 +104,7 @@ export default function CategoryProductsPage({ params }) {
       if (res.ok) {
         // নেভবার আপডেট করার ইভেন্ট ট্রিপ
         window.dispatchEvent(new Event("cartUpdated"));
-        toast.success(`${product.name} কার্টে যোগ করা হয়েছে!`);
+        toast.success(`${product?.name} কার্টে যোগ করা হয়েছে!`);
         
         setAddedId(product._id);
         setTimeout(() => setAddedId(null), 2500);
@@ -198,7 +198,7 @@ export default function CategoryProductsPage({ params }) {
                     />
 
                     {/* Badge */}
-                    {product.category && (
+                    {product?.category && (
                       <span className="absolute top-3 left-3 bg-[#800020] text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md backdrop-blur-md">
                         {product?.category}
                       </span>
@@ -214,7 +214,7 @@ export default function CategoryProductsPage({ params }) {
                       <div className="flex items-center gap-1.5 text-amber-400 mb-2">
                         <Star size={14} fill="currentColor" />
                         <span className="text-xs font-bold text-slate-700 dark:text-neutral-300">
-                          {product.stock || "always"}
+                          {product?.stock || "always"}
                         </span>
                       </div>
 
@@ -222,7 +222,7 @@ export default function CategoryProductsPage({ params }) {
                         {product.name}
                       </h3>
                       <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1 line-clamp-2 leading-relaxed">
-                        {product.description || "১০০% টেকসই ও পরিবেশবান্ধব হস্তশিল্প সামগ্রী।"}
+                        {product?.description || "১০০% টেকসই ও পরিবেশবান্ধব হস্তশিল্প সামগ্রী।"}
                       </p>
                     </div>
 

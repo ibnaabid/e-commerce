@@ -5,6 +5,7 @@ import HeroPage from './Main/page';
 import CategoryFilter from './Category/page';
 import EcoShopPage from './Shop/page';
 import AllReviewsList from './ReviewsCustomer/page';
+import WhatsAppBtn from './whatsapp/page';
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -58,7 +59,8 @@ export default function Home() {
 
       {/* ⭐️ কাস্টমার রিভিউজ */}
       <AllReviewsList />
-      
+      <WhatsAppBtn/>
+
 
     </main>
   );
