@@ -18,7 +18,7 @@ export default function WhatsAppBtn({ product }) {
   // 💬 ব্যাকটিক ( Template Literal ) ঠিক করে মেসেজ ফরম্যাট করা হয়েছে
   const customMessage = isProductAvailable
     ? `Hello EcoWorld! শুভ দিন! আপনার মনের মতো প্রোডাক্ট খুঁজে পেতে সাহায্য লাগবে? আমাদের সরাসরি মেসেজ দিন।\n\n📌 Product: ${productName}\n🆔 Product ID: ${productId}`
-    : "হ্যালো! আপনার কেনাকাটাকে আরও সহজ করতে আমরা আছি আপনার সাথে। কীভাবে সাহায্য করব বলুন?";
+    : "হ্যালো!  কেনাকাটাকে আরও সহজ করতে আমরা আছি আপনার সাথে। ";
 
   const defaultMessage = encodeURIComponent(customMessage);
 
