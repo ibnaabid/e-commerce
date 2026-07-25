@@ -2,31 +2,55 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { 
-  LayoutGrid, 
-  Trees, 
   Sparkles, 
-  Shield, 
-  Compass, 
-  Gift, 
-  Layers, 
-  ShoppingBag, 
-  ArrowRight,
-  Flame,
-  Sparkle,
-  Leaf,
-  TreePalm,
-  AlignJustify
+  Flame, 
+  Leaf, 
+  ChevronRight,
+  ArrowRight
 } from 'lucide-react';
 
+// আইকনের জায়গায় প্রতিটি ক্যাটাগরির জন্য হাই-কোয়ালিটি ইমেজের ইউআরএল দেওয়া হয়েছে
 const categories = [
-  { name: "All", icon: LayoutGrid },
-  { name: "Bamboo", icon: TreePalm },
-  { name: "Jute", icon: AlignJustify },
-  { name: "Hogla", icon: Shield },
-  { name: "Shatranji", icon: Layers },
-  { name: "Kaisa", icon: Compass },
-  { name: "Other", icon: Gift },
+  { 
+    name: "All", 
+    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=200&auto=format&fit=crop&q=80", 
+    count: "সকল প্রডাক্ট",
+    badge: "Hot"
+  },
+  { 
+    name: "Bamboo", 
+    image: "https://images.unsplash.com/photo-1611269154421-4e27233ac5c7?w=200&auto=format&fit=crop&q=80", 
+    
+    badge: "Trending"
+  },
+  { 
+    name: "Jute", 
+    image: "https://media.gettyimages.com/id/1230803766/photo/daily-workers-processing-jute-in-jamalpur-district-outskirts-of-dhaka-bangladesh-on-january.jpg?s=612x612&w=0&k=20&c=40otFwJ2y-YDspg8cuXv-fhsiMm_PJmQ2W4uP9COJCQ=", 
+    
+  },
+  { 
+    name: "Hogla", 
+    image: "https://media.gettyimages.com/id/2202692367/photo/hanoi-hanoi-province-vietnam-braided-bamboo-baskets-and-bowls-are-offered-for-sale-in-a-shop.jpg?s=612x612&w=0&k=20&c=B6L3E8flndlCLlWRNx0ydWmwpRgGCxXACESQ9Dzq_4g=", 
+   
+  },
+  { 
+    name: "Shatranji", 
+    image: "https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=200&auto=format&fit=crop&q=80", 
+
+    badge: "Popular"
+  },
+  { 
+    name: "Kaisa", 
+    image: "https://media.gettyimages.com/id/2263833519/photo/bamboo-basket-hanging-on-wooden-structure.jpg?s=612x612&w=0&k=20&c=gOj6EBPFzytTraFWMFMnvxNJ-zQQV6xVq2yIEWMCA-8=", 
+    
+  },
+  { 
+    name: "Other", 
+    image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=200&auto=format&fit=crop&q=80", 
+   
+  },
 ];
 
 export default function CategoryFilter({ 
@@ -34,133 +58,120 @@ export default function CategoryFilter({
   onSelectCategory = () => {} 
 }) {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8 md:my-12">
-      
-      {/* Premium Banner */}
-      <motion.div
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.99 }}
-        onClick={() => onSelectCategory("All")}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#2D5A27] via-[#1E3A1F] to-[#4A0010] border border-[#FFD700]/30 p-6 sm:p-8 md:p-10 mb-8 cursor-pointer group shadow-2xl"
-      >
-        <div className="absolute inset-0 overflow-hidden opacity-30">
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute text-[#FFD700]"
-              initial={{ opacity: 0.3, rotate: -20 }}
-              animate={{
-                y: [0, -25, 0],
-                rotate: [-15, 15, -15],
-                opacity: [0.2, 0.45, 0.2]
-              }}
-              transition={{
-                duration: 7 + i * 0.7,
-                repeat: Infinity,
-                delay: i * 0.5
-              }}
-              style={{
-                top: `${15 + i * 15}%`,
-                left: `${8 + (i % 3) * 28}%`,
-                fontSize: `${1.8 + i * 0.4}rem`
-              }}
-            >
-              <Leaf />
-            </motion.div>
-          ))}
-        </div>
+    <div className="bg-white/95 backdrop-blur-md p-5 rounded-3xl shadow-2xl border border-[#2D5A27]/20 h-full flex flex-col justify-between">
+      <div>
+        
+        {/* ================= ATTRACTIVE HEADER ================= */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#800020] via-[#5A0016] to-[#2D5A27] p-4 text-white mb-5 shadow-lg border border-[#FFD700]/30">
+          
+          {/* ব্যাকগ্রাউন্ড ব্লিঙ্ক অ্যানিমেশন */}
+          <div className="absolute -right-4 -top-4 w-20 h-20 bg-amber-400/20 rounded-full blur-xl animate-pulse"></div>
 
-        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="flex items-center gap-4 md:gap-5">
-            <motion.div 
-              whileHover={{ rotate: 20, scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-[#FFD700] to-[#FFAA00] flex items-center justify-center text-[#1E3A1F] shadow-xl shrink-0"
-            >
-              <ShoppingBag size={28} className="md:size-8" />
-            </motion.div>
-            
-            <div>
-              <div className="inline-flex items-center gap-2 px-4 py-1 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-full text-xs md:text-sm font-bold mb-2">
-                <Flame size={14} className="text-amber-400 animate-pulse" /> 
-                EXCLUSIVE ECO COLLECTION
+          <div className="relative z-10 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <motion.div 
+                animate={{ rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="p-2 bg-[#FFD700] text-[#800020] rounded-xl shadow-md font-bold"
+              >
+                <Flame size={18} />
+              </motion.div>
+              <div>
+                <span className="text-[10px] uppercase tracking-widest text-amber-300 font-extrabold flex items-center gap-1">
+                  <Sparkles size={10} /> এক্সক্লুসিভ স্পেশাল
+                </span>
+                <h2 className="text-base md:text-lg font-black tracking-tight text-white">
+                  ক্যাটাগরি পছন্দ করুন
+                </h2>
               </div>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight group-hover:text-[#FFD700] transition-colors">
-                আমাদের সমস্ত প্রিমিয়াম<br className="hidden sm:block" />ইকো প্রোডাক্ট
-              </h2>
             </div>
-          </div>
 
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-3 px-6 md:px-8 py-3.5 md:py-4 bg-white text-[#1E3A1F] rounded-2xl font-bold text-sm md:text-base shadow-lg hover:shadow-xl transition-all border-2 border-white/30 whitespace-nowrap"
-          >
-            <Sparkle size={18} className="text-amber-500" />
-            সব প্রোডাক্ট দেখুন
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </motion.button>
-        </div>
-      </motion.div>
-
-      {/* Category Buttons - Responsive Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3 md:gap-4">
-        {categories.map((cat, index) => {
-          const IconComponent = cat.icon;
-          const isSelected = selectedCategory === cat.name;
-
-          return (
-            <motion.button
-              key={cat.name}
-              onClick={() => onSelectCategory(cat.name)}
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.03 }}
-              className={`relative flex flex-col items-center justify-center gap-3 py-5 md:py-6 rounded-2xl text-sm md:text-base font-bold transition-all duration-300 shadow-md ${
-                isSelected
-                  ? "text-white shadow-2xl"
-                  : "text-white/80 hover:text-white hover:shadow-xl"
-              }`}
+            <motion.span 
+              whileHover={{ scale: 1.05 }}
+              className="text-[11px] bg-white/20 backdrop-blur-md text-amber-200 border border-white/20 px-2.5 py-1 rounded-full font-bold flex items-center gap-1"
             >
-              {/* Background Layer */}
-              {isSelected ? (
-                <motion.div
-                  layoutId="activeBambooBg"
-                  className="absolute inset-0 bg-gradient-to-br from-[#2D5A27] via-[#4A7043] to-[#1E3A1F] rounded-2xl border-2 border-[#FFD700]/50"
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                />
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-[#2D5A27]/70 to-[#1E3A1F]/70 hover:from-[#4A7043] hover:to-[#2D5A27] rounded-2xl border border-white/20 hover:border-[#FFD700]/30 transition-all" />
-              )}
+              এক্সপ্লোর <ArrowRight size={12} />
+            </motion.span>
+          </div>
+        </div>
 
-              <span className="relative z-10 flex flex-col items-center gap-2">
-                <motion.div
-                  animate={isSelected ? { rotate: [0, 12, -12, 0] } : {}}
-                  transition={{ duration: 2.2, repeat: Infinity }}
-                >
-                  <IconComponent 
-                    size={26} 
-                    className={isSelected ? "text-[#FFD700] drop-shadow-md" : "text-[#A3D977]"} 
-                  />
-                </motion.div>
-                <span className="text-center">{cat.name}</span>
-              </span>
+        {/* ================= CATEGORY ITEMS WITH IMAGES ================= */}
+        <div className="space-y-2.5">
+          {categories.map((cat, index) => {
+            const isSelected = selectedCategory === cat.name;
 
-              {/* Selected Leaf */}
-              {isSelected && (
-                <motion.div
-                  className="absolute -top-1 -right-1 text-[#FFD700]"
-                  animate={{ rotate: 25, scale: [1, 1.3, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <Leaf size={18} />
-                </motion.div>
-              )}
-            </motion.button>
-          );
-        })}
+            return (
+              <motion.button
+                key={cat.name}
+                onClick={() => onSelectCategory(cat.name)}
+                whileHover={{ x: 6, scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.04 }}
+                className={`w-full relative flex items-center justify-between p-2.5 rounded-2xl transition-all duration-300 text-left cursor-pointer group ${
+                  isSelected
+                    ? "bg-gradient-to-r from-[#800020] via-[#600018] to-[#2D5A27] text-white shadow-xl shadow-[#800020]/25 font-bold border border-[#FFD700]/40"
+                    : "bg-gray-50 hover:bg-[#F4F1EA] text-gray-800 hover:text-[#800020] border border-gray-100 hover:border-[#800020]/20"
+                }`}
+              >
+                {/* বাঁদিকের পার্ট: ইমেজ + নাম + কাউন্ট */}
+                <div className="flex items-center gap-3 z-10">
+                  {/* Category Image Component */}
+                  <div className="relative w-11 h-11 rounded-xl overflow-hidden shadow-md shrink-0 border-2 border-white">
+                    <Image 
+                      src={cat.image} 
+                      alt={cat.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-bold leading-tight tracking-wide">{cat.name}</h3>
+                      {cat.badge && (
+                        <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-extrabold uppercase ${
+                          isSelected ? "bg-[#FFD700] text-[#800020]" : "bg-[#800020] text-white"
+                        }`}>
+                          {cat.badge}
+                        </span>
+                      )}
+                    </div>
+                    <p className={`text-[11px] font-medium ${isSelected ? "text-amber-200/90" : "text-gray-400"}`}>
+                      {cat.count}
+                    </p>
+                  </div>
+                </div>
+
+                {/* ডানদিকের পার্ট: অ্যানিমেটেড আইকন */}
+                <div className="flex items-center gap-1 z-10 pr-1">
+                  {isSelected ? (
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1], rotate: [0, 10, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="text-[#FFD700]"
+                    >
+                      <Leaf size={18} />
+                    </motion.div>
+                  ) : (
+                    <ChevronRight size={16} className="text-gray-400 group-hover:text-[#800020] group-hover:translate-x-1 transition-transform" />
+                  )}
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ================= FOOTER FEATURE ================= */}
+      <div className="mt-4 p-3 bg-gradient-to-r from-[#2D5A27]/15 to-[#800020]/10 rounded-2xl border border-[#2D5A27]/20 flex items-center justify-between text-xs font-bold text-[#2D5A27]">
+        <span className="flex items-center gap-1.5">
+          <Leaf size={14} className="text-[#2D5A27] animate-bounce" /> ১০০% ইকো-ফ্রেন্ডলি কালেকশন
+        </span>
+        <span className="text-[10px] bg-[#2D5A27] text-white px-2 py-0.5 rounded-md">
+          Eco World
+        </span>
       </div>
     </div>
   );

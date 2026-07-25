@@ -45,7 +45,7 @@ export default function NavbarCart() {
   }, [fetchCartCount]);
 
   return (
-    <nav className="bg-neutral-950 border-b border-white/10 sticky top-0 z-50 px-4 py-3">
+    <nav className="bg-red-950 hover:bg-green-700/30 border-b border-white/10 rounded-full sticky top-0 z-50 px-4 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
         {/* 🛒 Cart Icon with Dynamic Badge */}

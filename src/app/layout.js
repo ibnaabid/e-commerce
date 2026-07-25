@@ -1,8 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./Navbar/page";
 import Footer from "./Footer/page";
 import { Toaster } from "react-hot-toast";
+import Navbar from "./Navbar/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: {
-    default: "EcoWorld - প্রিমিয়াম বাঁশের পণ্য ও ইকো ফ্রেন্ডলি শপ",
+    default: "EcoWorld - প্রিমিয়াম  পণ্য ও ইকো ফ্রেন্ডলি শপ",
     template: "%s | EcoWorld Bangladesh",
   },
   description: "EcoWorld থেকে কিনুন ১০০% অর্গানিক বাঁশ, জুট, হোগলা ও প্রাকৃতিক হ্যান্ডমেড পণ্য। টেকসই জীবনযাপনের জন্য সেরা অনলাইন শপ।",
@@ -32,23 +32,23 @@ export const metadata = {
     description: "টেকসই ও অর্গানিক বাঁশের পণ্য কিনুন সেরা দামে।",
     images: [
       {
-        url: "/https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhuvdQ52dcmjgfpM9RCp2DJol_AzWQ-z0bNl6m1yJc1A&s=10",
+        url: "/images (1).jpg",
         width: 1200,
         height: 630,
         alt: "EcoWorld Logo",
       },
     ],
-    siteName: "EcoWorld",
+    siteName: "Eco-World",
     locale: "bn_BD",
   },
   twitter: {
     card: "summary_large_image",
     title: "EcoWorld - প্রিমিয়াম ইকো প্রোডাক্ট",
     description: "বাঁশের পণ্যের সেরা অনলাইন শপ",
-    images: ["/logo.png"],
+    images: ["/images (1).jpg"],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images (1).jpg",
     apple: "/apple-touch-icon.png",
   },
   robots: {
@@ -64,8 +64,7 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#F8F5F1]">
-        {/* Navbar */}
-        <Navbar />
+     <Navbar/>
 
         {/* Main Content */}
         <main className="flex-1">

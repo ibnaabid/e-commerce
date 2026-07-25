@@ -9,43 +9,56 @@ import AllReviewsList from './ReviewsCustomer/page';
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   
-  // 🎯 প্রোডাক্ট সেকশনে অটো স্ক্রোল করার জন্য Ref
+  // 🎯 প্রোডাক্ট সেকশনে স্মুথ স্ক্রোল করার জন্য Ref
   const productsSectionRef = useRef(null);
 
-const handleCategorySelect = (categoryName) => {
-  setSelectedCategory(categoryName);
+  const handleCategorySelect = (categoryName) => {
+    setSelectedCategory(categoryName);
 
-  if (productsSectionRef.current) {
-    // 🎯 offset-এর মান বাড়িয়ে দিলে পেজ আরও নিচে নামবে, যাতে পুরো কার্ড দেখা যায়
-    const offset = -400; // আপনার সুবিধামত এই মানটি (যেমন: 100, 120, 150) বাড়িয়ে-কমিয়ে নিতে পারেন
-    const bodyRect = document.body.getBoundingClientRect().top;
-    const elementRect = productsSectionRef.current.getBoundingClientRect().top;
-    const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
+    if (productsSectionRef.current) {
+      // 🎯 স্ট্যান্ডার্ড নেভিগেশন বার অফসেট (৮০ পিক্সেল উপরে ফাকা থাকবে)
+      const navbarOffset = -100; 
+      const elementPosition = productsSectionRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarOffset;
 
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    });
-  }
-};
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
-    <>
-      <HeroPage onSelectCategory={handleCategorySelect} />
+    <main className="space-y-12">
       
-      {/* 🟢 ক্যাটাগরি ফিল্টার */}
-      <CategoryFilter
-        selectedCategory={selectedCategory} 
-        onSelectCategory={handleCategorySelect} 
-      />
+      {/* 🟢 HERO & CATEGORY GRID SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          
+          {/* ক্যাটাগরি ফিল্টার: ডেস্কে বামে (4 Col), মোবাইলে হিরোর নিচে (Order 2) */}
+          <div className="lg:col-span-4 order-2 lg:order-1">
+            <CategoryFilter
+              selectedCategory={selectedCategory} 
+              onSelectCategory={handleCategorySelect} 
+            />
+          </div>
 
-      {/* 📦 প্রোডাক্ট সেকশন (Scroll Target) */}
-      <div ref={productsSectionRef} className="scroll-pt-28">
+          {/* হিরো স্লাইডার: ডেস্কে ডানে (8 Col), মোবাইলে সবার উপরে (Order 1) */}
+          <div className="lg:col-span-8 order-1 lg:order-2">
+            <HeroPage onSelectCategory={handleCategorySelect} />
+          </div>
+
+        </div>
+      </section>
+
+      {/* 📦 প্রোডাক্ট শপ সেকশন (Scroll Target) */}
+      <div ref={productsSectionRef} className="scroll-mt-24">
         <EcoShopPage selectedCategory={selectedCategory} />
       </div>
-      
+
+      {/* ⭐️ কাস্টমার রিভিউজ */}
       <AllReviewsList />
-    </>
+
+    </main>
   );
 }

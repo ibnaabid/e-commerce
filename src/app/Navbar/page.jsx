@@ -17,16 +17,17 @@ import {
   Moon,
   Heart,
   Sparkles,
+  LayoutGrid,
 } from "lucide-react";
 import { authClient } from "../lib/auth-client";
-import NavbarCart from "./cartIcon";
+import NavbarCart from "./cartIcon"; // NavbarCart ইমপোর্ট করা হলো
 
 export default function Navbar() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // 🚀 Scroll State: স্ক্রোল করলে নেভবার কিছুটা ছোট ও শ্যাডো যুক্ত হয়ে এনিমেশন করবে
+  // 🚀 Scroll State
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🌓 Pure React Theme Handling
+  // 🌓 Theme Handling
   const [theme, setTheme] = useState("light");
   const [mounted, setMounted] = useState(false);
 
@@ -87,6 +88,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Home", href: "/", icon: Home },
+    { label: "All-Categories", href: "/categories", icon: LayoutGrid },
     { label: "Wishlist", href: "/wishlist", icon: Heart },
     { label: "About", href: "/About", icon: Info },
     { label: "Contact", href: "/contact", icon: Phone },
@@ -142,7 +144,10 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Right Side Controls */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex rounded-3xl items-center gap-3">
+            {/* 🛒 PC Cart Icon */}
+            <NavbarCart />
+
             {/* Dark / Light Toggle */}
             {mounted && (
               <button
@@ -179,8 +184,6 @@ export default function Navbar() {
                   Dashboard
                 </Link>
 
-                <NavbarCart />
-
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-medium text-gray-700 dark:text-neutral-300 hover:text-red-500 hover:bg-red-500/10 transition-all"
@@ -207,7 +210,10 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Right Controls */}
-          <div className="flex items-center gap-3 md:hidden">
+          <div className="flex items-center gap-2 sm:gap-3 md:hidden">
+            {/* 🛒 Mobile Cart Icon (সরাসরি হেডারে দেখার জন্য) */}
+            <NavbarCart />
+
             {mounted && (
               <button
                 onClick={toggleTheme}
@@ -235,13 +241,15 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-200 dark:border-neutral-800 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-2xl px-6 py-6 space-y-2">
           {user && (
-            <div className="flex items-center gap-3 px-4 py-3 mb-4 bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-2xl">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-lg font-bold text-white">
-                {userInitial}
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 dark:text-white">{userName}</p>
-                <p className="text-xs text-emerald-600 dark:text-emerald-400 capitalize">{role}</p>
+            <div className="flex items-center justify-between px-4 py-3 mb-4 bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-2xl">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-lg font-bold text-white">
+                  {userInitial}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white">{userName}</p>
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400 capitalize">{role}</p>
+                </div>
               </div>
             </div>
           )}
