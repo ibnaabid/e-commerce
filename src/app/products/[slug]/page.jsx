@@ -15,7 +15,7 @@ import {
   CheckCircle2,
   SlidersHorizontal
 } from 'lucide-react';
-import { useSession } from "../lib/auth-client";
+import { useSession } from '@/app/lib/auth-client';
 
 export default function CategoryProductsPage({ params }) {
   // ১. URL থেকে Dynamic Slug রিড করা
