@@ -3,11 +3,10 @@
 import React, { use, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   ArrowLeft, 
   ShoppingCart, 
-  Heart, 
   Star, 
   Loader2, 
   PackageX, 
@@ -17,10 +16,11 @@ import {
   Plus,
   Minus
 } from 'lucide-react';
-// import { useSession } from '@/app/lib/auth-client';
 import toast from 'react-hot-toast';
 import { useSession } from '@/app/lib/auth-client';
 import FavoriteBtn from '@/app/Shop/[id]/Favbtn';
+// import { useSession } from '@/app/lib/auth-client';
+// import FavoriteBtn from '@/app/Shop/[id]/Favbtn';
 
 export default function CategoryProductsPage({ params }) {
   const resolvedParams = use(params);
@@ -32,7 +32,7 @@ export default function CategoryProductsPage({ params }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // প্রোডাক্ট অনুযায়ী Quantity ট্রাক রাখার জন্য State (e.g., { productId: quantity })
+  // প্রোডাক্ট অনুযায়ী Quantity ট্র্যাক রাখার জন্য State
   const [quantities, setQuantities] = useState({});
   const [addingId, setAddingId] = useState(null);
   const [addedId, setAddedId] = useState(null);
@@ -40,6 +40,7 @@ export default function CategoryProductsPage({ params }) {
   // ১. স্লাগ অনুযায়ী ব্যাকএন্ড এপিআই থেকে প্রোডাক্ট ফেচ
   useEffect(() => {
     async function fetchProducts() {
+      if (!slug) return;
       setLoading(true);
       try {
         const res = await fetch(`https://e-commerce-backend-kappa-nine.vercel.app/products?category=${slug}`);
@@ -58,12 +59,13 @@ export default function CategoryProductsPage({ params }) {
         }
       } catch (err) {
         console.error("Error fetching products:", err);
+        toast.error("প্রোডাক্ট লোড করতে সমস্যা হয়েছে।");
       } finally {
         setLoading(false);
       }
     }
 
-    if (slug) fetchProducts();
+    fetchProducts();
   }, [slug]);
 
   // ➕/➖ Quantity চেঞ্জ হ্যান্ডলার
@@ -90,7 +92,7 @@ export default function CategoryProductsPage({ params }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userEmail: userEmail, // 👈 ব্যাকএন্ডের জন্য userEmail পাঠানো হলো
+          userEmail: userEmail, // ব্যাকএন্ডের জন্য userEmail
           productId: product._id,
           name: product.name,
           price: product.price,
@@ -100,8 +102,9 @@ export default function CategoryProductsPage({ params }) {
       });
 
       if (res.ok) {
-        // নেভবার আপডেট করার ইভেন্ট
+        // নেভবার আপডেট করার ইভেন্ট ট্রিপ
         window.dispatchEvent(new Event("cartUpdated"));
+        toast.success(`${product.name} কার্টে যোগ করা হয়েছে!`);
         
         setAddedId(product._id);
         setTimeout(() => setAddedId(null), 2500);
@@ -111,6 +114,7 @@ export default function CategoryProductsPage({ params }) {
       }
     } catch (err) {
       console.error("Add to cart error:", err);
+      toast.error("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
     } finally {
       setAddingId(null);
     }
@@ -186,21 +190,22 @@ export default function CategoryProductsPage({ params }) {
                   {/* Image Container */}
                   <div className="relative w-full h-56 bg-slate-100 dark:bg-neutral-800 overflow-hidden">
                     <Image
-                      src={product.image || "https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop&q=80"}
-                      alt={product.name || "Product"}
+                      src={product?.image || "https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop&q=80"}
+                      alt={product?.name || "Product"}
                       fill
                       sizes="(max-width: 768px) 100vw, 300px"
                       className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                     />
 
                     {/* Badge */}
-                    {product.badge && (
+                    {product.category && (
                       <span className="absolute top-3 left-3 bg-[#800020] text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md backdrop-blur-md">
-                        {product.badge}
+                        {product?.category}
                       </span>
                     )}
 
-                   <FavoriteBtn product={product}/>
+                    {/* Favorite Button */}
+                    <FavoriteBtn product={product} />
                   </div>
 
                   {/* Product Details */}
@@ -209,7 +214,7 @@ export default function CategoryProductsPage({ params }) {
                       <div className="flex items-center gap-1.5 text-amber-400 mb-2">
                         <Star size={14} fill="currentColor" />
                         <span className="text-xs font-bold text-slate-700 dark:text-neutral-300">
-                          {product.rating || "4.9"}
+                          {product.stock || "always"}
                         </span>
                       </div>
 
