@@ -137,7 +137,7 @@ export default function CartPage() {
               Looks like you haven't added any eco-friendly items yet.
             </p>
             <Link
-              href="/shop"
+              href="/categories"
               className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-xl text-white transition"
             >
               Explore Products
