@@ -96,7 +96,7 @@ export default function CategoryProductsPage({ params }) {
           productId: product._id,
           name: product.name,
           price: product.price,
-          image: product?.images,
+          images: product?.images,
           quantity: selectedQuantity
         })
       });
@@ -190,7 +190,7 @@ export default function CategoryProductsPage({ params }) {
                   {/* Image Container */}
                   <div className="relative w-full h-56 bg-slate-100 dark:bg-neutral-800 overflow-hidden">
                     <Image
-                      src={product?.images || "https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop&q=80"}
+                      src={product?.images?.[0] || "https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop&q=80"}
                       alt={product?.name || "Product"}
                       fill
                       sizes="(max-width: 768px) 100vw, 300px"
@@ -205,7 +205,7 @@ export default function CategoryProductsPage({ params }) {
                     )}
 
                     {/* Favorite Button */}
-                    <FavoriteBtn product={product} />
+                    <FavoriteBtn className="absolute top-3 mx-3" product={product} />
                   </div>
 
                   {/* Product Details */}
@@ -219,7 +219,7 @@ export default function CategoryProductsPage({ params }) {
                       </div>
 
                       <h3 className="font-bold text-base text-slate-800 dark:text-neutral-100 line-clamp-1 group-hover:text-[#800020] dark:group-hover:text-emerald-400 transition-colors">
-                        {product.name}
+                        {product?.name}
                       </h3>
                       <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1 line-clamp-2 leading-relaxed">
                         {product?.description || "১০০% টেকসই ও পরিবেশবান্ধব হস্তশিল্প সামগ্রী।"}
