@@ -146,7 +146,7 @@ export default function EcoShopPage({ selectedCategory = "All" }) {
                       className="h-8 w-10 mr-4 sm:h-8 sm:w-8 flex items-center justify-center border border-gray-200 bg-slate-200 hover:bg-gray-300 text-gray-600 hover:text-gray-900 rounded-lg transition active:scale-95 shrink-0"
                       title="View Details"
                     >
-                      <Eye size={17} />
+                      <Eye size={17} /> 
                     </Link>
                   </div>
                 </div>

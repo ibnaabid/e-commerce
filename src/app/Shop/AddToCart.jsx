@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ShoppingCart, Plus, Minus, Loader2 } from "lucide-react";
 import { useSession } from "../lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function AddToCart({ product }) {
   const { data: session } = useSession();
@@ -27,9 +28,10 @@ export default function AddToCart({ product }) {
   const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    toast.success("add to cart sucessfull..😊")
 
     if (!userEmail) {
-      alert("Please login to add items to cart!");
+      toast.error("Please login to add items to cart!");
       return;
     }
 
