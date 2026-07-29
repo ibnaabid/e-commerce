@@ -1,7 +1,6 @@
-import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
-import { auth } from './app/lib/auth';
-// import { auth } from './app/lib/auth';
+import { NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { auth } from "@/app/lib/auth";
 
 const ADMIN_EMAIL = "mdmosabbirrahman07@gmail.com";
 
@@ -13,33 +12,45 @@ export async function proxy(request) {
   const user = session?.user;
   const userRole = user?.role;
   const userEmail = user?.email?.toLowerCase();
+
   const { pathname } = request.nextUrl;
 
+  // Not Logged In
   if (!user) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  // Admin
   if (pathname.startsWith("/dashboard/admin")) {
-    const isAdmin = userEmail === ADMIN_EMAIL.toLowerCase() || userRole === "admin";
+    const isAdmin =
+      userRole === "admin" ||
+      userEmail === ADMIN_EMAIL.toLowerCase();
+
     if (!isAdmin) {
-      return NextResponse.redirect(new URL("/dashboard/customer", request.url));
+      return NextResponse.redirect(
+        new URL("/dashboard/customer", request.url)
+      );
     }
   }
 
+ 
 
-
-  // 4. Owner Route Protection
-  if (pathname.startsWith("/dashboard/owner") && userRole !== "owner") {
+  // Customer
+  if (
+    pathname.startsWith("/dashboard/customer") &&
+    userRole !== "customer"
+  ) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
   return NextResponse.next();
 }
 
-// ⭐ Matcher Update: এতে ড্যাশবোর্ডের সব সাব-রাউটসহ Customer রাউটও প্রটেক্টেড থাকবে
 export const config = {
   matcher: [
-    "/dashboard/admin",
-    "/dashboard/customer",
+    "/dashboard/:path*",
+    "/dashboard/admin/:path*",
+    "/dashboard/customer/:path*"
+
   ],
 };
