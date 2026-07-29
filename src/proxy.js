@@ -39,7 +39,7 @@ export async function proxy(request) {
 // ⭐ Matcher Update: এতে ড্যাশবোর্ডের সব সাব-রাউটসহ Customer রাউটও প্রটেক্টেড থাকবে
 export const config = {
   matcher: [
-    "/dashboard/admin/:path*",
-    "/dashboard/customer/:path*",
+    "/dashboard/admin",
+    "/dashboard/customer",
   ],
 };
