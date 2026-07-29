@@ -20,7 +20,7 @@ export async function proxy(request) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Admin
+  // Admin routes only
   if (pathname.startsWith("/dashboard/admin")) {
     const isAdmin =
       userRole === "admin" ||
@@ -33,24 +33,9 @@ export async function proxy(request) {
     }
   }
 
- 
-
-  // Customer
-  if (
-    pathname.startsWith("/dashboard/customer") &&
-    userRole !== "customer"
-  ) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/dashboard/admin/:path*",
-    
-
-  ],
+  matcher: ["/dashboard/:path*"],
 };
